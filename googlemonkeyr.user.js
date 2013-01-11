@@ -369,6 +369,7 @@ var UIL =
 
     init : function()
     {
+//return;
         var pageType = this.determineCurrentPageType();
         //console.log(pageType);
         if(pageType !== null)
@@ -445,16 +446,40 @@ var UIL =
     },
 
     searchPageProcessor : function()
-    {
+    {    
         this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #cnt #center_col, #cnt #foot, .mw {width:auto !important; max-width:100% !important;} #rhs {left:auto; !important}#botstuff .sp_cnt,#botstuff .ssp{display:none} .s{max-width:98%!important;} .vshid{display:inline} #res h3.r {white-space:normal}");
         if(UIL.Config.getHideSearch())
         {
             this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rcnt{margin-top:1em} #sfcnt,#sftr,#searchform{display:none!important;}#cnt{padding:0}#cnt .mw:first-child{position:absolute;top:4.5em;right:0}#rshdr .sfcc{position:absolute;top:2em;right:0}");
         }
 
-        if(UIL.Config.getRemSponsor())
+	// Hide entire left toolbar
+	//    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); div.lnsec {display:none;}");
+	
+        // Hide useless "Everything toolbar"
+	if (true)
+	    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); div#modeselector {display:none;} div.lnsec{border-top:0;}");
+	
+        //  if(UIL.Config.getRemSponsor())
+	if (true)
         {
-            this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #center_col, #foot {margin-right: 0 !important;} #rhs, #tads, #topstuff table.ts, #bottomads{display:none;}");
+              // normally third column is for ads, shrink it so we have more space
+              var tr = document.getElementByXPath("//table[@id='mn']//tr");
+	      if (tr)
+	      {
+		  var td = tr.childNodes[2];
+		  td.width = 100;
+	      }
+	
+//            this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #center_col, #foot {margin-right: 0 !important;} #rhs, #tads, #topstuff table.ts, #bottomads{display:none;}");
+
+	    // rhs ads
+            this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");
+
+	    // top and bottom ads
+	    var elems = document.getElementsByXPath("//div[@id='center_col']/div/h2[@class='spon']");
+	    for (var i = 0; elems[i]; i++)
+		elems[i].parentNode.style.display = "none";
         }
 
 		if(UIL.Config.getSearchesRelatedTo())
@@ -474,7 +499,9 @@ var UIL =
 
         this.externalLinksResults = UIL.Config.getExtLinkSearch();
 
-        this.searchLinkTracking = UIL.Config.getSearchLinkTracking();
+//        this.searchLinkTracking = UIL.Config.getSearchLinkTracking();
+//	this.searchLinkTracking = false;
+	this.searchLinkTracking = true;
 
         this.imagePreview = UIL.Config.getImagePreview();
 
@@ -672,6 +699,7 @@ var UIL =
 
     resultsToTable : function(list, i, resLength)
     {
+//        console.log("resultsToTable");
         var link = list[i], div;
         if(this.numResults && (div = document.getElementByXPath("./div/*[1] | ./h3[1]", link)))
         {
@@ -702,10 +730,21 @@ var UIL =
         {
             this.resultsTable.insertRow(row);
         }
-        var a = document.getElementByXPath(".//h3[contains(@class,'r')]/a[contains(@class, 'l')]", link);
+
+//        var a = document.getElementByXPath(".//h3[contains(@class,'r')]/a[contains(@class, 'l')]", link);
+	var a = document.getElementByXPath(".//h3[contains(@class,'r')]/a", link);
         if(a)
         {
-            //console.log(a.href)
+//            console.log(a.href)
+	    
+	    // turn into a direct link
+	    var indirect_link = a.href.match(/\/url\?q\=(http[^&]*)&/);
+	    if (indirect_link)
+	    {
+//		console.log("Turning to direct link");
+		a.href = unescape(indirect_link[1]);
+	    }
+	    
             if(this.externalLinksResults)
             {
                 a.target = "_blank";
@@ -715,10 +754,10 @@ var UIL =
                 a.target = "_self";
             }
 
-            if(this.searchLinkTracking)
-            {
+//            if(this.searchLinkTracking)
+//            {
                 a.removeAttribute("onmousedown");
-            }
+//            }
 
             if(this.favIcon)
             {
@@ -745,6 +784,7 @@ var UIL =
                 a.parentNode.parentNode.insertBefore(a2, a.parentNode);
             }
 			var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid']", link);
+//			var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid'] | .//div[@class='s']//span[@class='flc']", link);
 			if (ele) {
 //					console.log(ele.innerHTML);
 				var vsl = ele.getElementsByTagName('a');
@@ -757,7 +797,8 @@ var UIL =
 					vsl[k].setAttribute('class', 'fl');
 				}
 			}
-            if(!this.searchLinkTracking && ele)
+//            if(!this.searchLinkTracking && ele)
+			if(ele)
             {
 				var notrack = document.buildElement('a',
 					{href:a.href,'class':'fl',title:'Visit the link without Google tracking you'},'Trackless');
@@ -800,7 +841,7 @@ var UIL =
             this.resultStats.innerHTML = stats.innerHTML;
         }
 
-        var list = document.getElementsByXPath(".//div[@id='res']/div//li[starts-with(@class,'g')] | .//div[@id='res']/div//li/div[@class='g']", nextResult);
+        var list = document.getElementsByXPath(".//div[@id='res']/div//li[starts-with(@class,'g')] | .//div[@id='res']/table//li[starts-with(@class,'g')] | .//div[@id='res']/div//li/div[@class='g']", nextResult);
     	var length = list.length;
         for (i = 0; i < list.length; i++)
     	{
@@ -885,7 +926,7 @@ var UIL =
         var link = document.getElementById('GoogleMonkeyRLink');
         if (controls && !link)
         {
-			console.log(controls)
+//			console.log(controls)
             var parent = controls.parentNode;
 			//<li class="gbt gbtb"><a class="gbgt" id="gbg4" href="//google.com/profiles" aria-haspopup="true" aria-owns="gbd4"><span class="gbtb2"><span id="gbgs4" class="gbts"><span id="gbi4"><span id="gbi4m1">GoogleMonkeyR</span></span></span></span></a></li>
 			var li = document.buildElement('li',{'class':'gbkp gbmtc'});
