@@ -7,10 +7,14 @@
 // @download       http://userscripts.org/scripts/source/48293.user.js
 // @description    Makes images link directly to the original in Google Images search. The source website link is moved to the green URL below the image. Also gives the option to always use the basic (old) version of Google Images.
 // @include        http*://images.google.*/*
-// @include        http*://*.google.*/images?*
-// @include        http*://*.google.*/imgres?*
-// @include        http*://*.google.*/imghp*
+// @include        http*://www.google.*/search*tbm=isch*
 // ==/UserScript==
+
+// don't seem we need these ...
+// include        http*://*.google.*/images?*
+// include        http*://*.google.*/imgres?*
+// include        http*://*.google.*/imghp*
+
 
 (function () {
 
@@ -95,17 +99,22 @@ function oldLinks() {
 	var imgs = evalNodes('//a[contains(@href, "/imgres")]');
 	var img, a, host;
 	for (var i = 0; img = imgs.snapshotItem(i);  i++) {
-		host = img.parentNode.lastChild;
+	    // host = img.parentNode.lastChild;
+	    host = img.parentNode.childNodes[2];
+	    
 		a = document.createElement('a');
 		a.innerHTML = host.innerHTML;
 		a.setAttribute('style', "text-decoration: inherit; color: inherit");
+
 		a.setAttribute('href', decodeURIComponent(decodeURIComponent(img.href.match(/imgrefurl=([^&]+)/)[1])));
-		host.replaceChild(a, host.firstChild);
+
+		// host.replaceChild(a, host.firstChild);
+		img.parentNode.replaceChild(a, host);
 		try {
 			img.href = decodeURIComponent(decodeURIComponent(img.href.match(/imgurl=([^&]+)/)[1]));
 		} catch (e) {}
 	}
-	t.addEventListener('DOMNodeInserted', oldTrig, false);
+//	t.addEventListener('DOMNodeInserted', oldTrig, false);
 }
 
 function oldTrig() {
@@ -126,7 +135,8 @@ var n = document.getElementById("rg_hr");
 checkVersion();
 changeVersion();
 
-if ((/&sout=1/).test(document.location.href)) {
+//if ((/&sout=1/).test(document.location.href)) {
+if (true) { // force old stuff, for now. -ml
 	oldLinks();
 } else if (n) {
 	setTrig();
