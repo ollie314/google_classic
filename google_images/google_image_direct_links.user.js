@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name           Google Images direct links
-// @author         Dwoo
-// @version        2011-10-06
+// @author         Dwoo, lemonsqueeze
+// @version        2011-10-06-google_classic
 // @namespace      http://userscripts.org/scripts/show/48293
-// @updateURL      https://userscripts.org/scripts/source/48293.meta.js
-// @download       http://userscripts.org/scripts/source/48293.user.js
+// @scriptsource   https://raw.github.com/lemonsqueeze/google_classic/master/google_images/google_image_direct_links.user.js
+// @upstreamscriptsource      https://userscripts.org/scripts/source/48293.meta.js
 // @description    Makes images link directly to the original in Google Images search. The source website link is moved to the green URL below the image. Also gives the option to always use the basic (old) version of Google Images.
 // @include        http*://images.google.*/*
 // @include        http*://www.google.*/search*tbm=isch*
 // ==/UserScript==
 
-// don't seem we need these ...
+// don't need these for images.google.com (but we do for google.com -> image search)
 // include        http*://*.google.*/images?*
 // include        http*://*.google.*/imgres?*
 // include        http*://*.google.*/imghp*

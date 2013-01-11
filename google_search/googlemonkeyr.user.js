@@ -1,6 +1,6 @@
 // ==UserScript==
-// @author         mungushume
-// @version        1.5.4
+// @author         mungushume, lemonsqueeze
+// @version        1.5.4-google_classic
 // @name           GoogleMonkeyR
 // @namespace      http://www.monkeyr.com
 // @description    Google - Multiple columns of results, Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
@@ -20,8 +20,9 @@
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
 // @uso:script     9310
-// @scriptsource   http://userscripts.org/scripts/show/9310
-// @scriptsource   http://google.monkeyr.com/script/1.5.4/googlemonkeyr.user.js
+// @scriptsource   https://github.com/lemonsqueeze/google_classic/raw/master/google_search/googlemonkeyr.user.js
+// @upstreamscriptsource   http://userscripts.org/scripts/show/9310
+// @upstreamscriptsource   http://google.monkeyr.com/script/1.5.4/googlemonkeyr.user.js
 /* StartHistory
 
 v1.5.4 - 6 Dec 2011
