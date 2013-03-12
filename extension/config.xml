@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" version="0.1"
+	id="https://github.com/lemonsqueeze/google_classic">
+    <name>Google Classic</name>
+    <description>Clean, light and fast Google Search (and Image Search)</description>
+    <author href="https://github.com/lemonsqueeze/google_classic">lemonsqueeze</author>
+    <icon src="icon.png"/>
+    <license href="http://www.gnu.org/licenses/gpl-2.0.html">
+    Licensed under the GNU GPL v2
+    </license>
+</widget>

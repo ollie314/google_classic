@@ -8,18 +8,14 @@
 // @description    Makes images link directly to the original in Google Images search. The source website link is moved to the green URL below the image. Also gives the option to always use the basic (old) version of Google Images.
 // @include        http*://images.google.*/*
 // @include        http*://www.google.*/search*tbm=isch*
+// @include        http*://*.google.*/images?*
+// @include        http*://*.google.*/imghp*  
 // ==/UserScript==
 
-// don't need these for images.google.com (but we do for google.com -> image search)
-// include        http*://*.google.*/images?*
-// include        http*://*.google.*/imgres?*
-// include        http*://*.google.*/imghp*
-
-
-(function () {
+(function (document, location, setTimeout) {
 
 function evalNodes(path) {
-	return document.evaluate(path, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+	return document.evaluate(path, document, null, window.XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 }
 
 function evalNode(path) {
@@ -27,11 +23,14 @@ function evalNode(path) {
 }
 
 function basicVersion() {
+    return true;
+    /*
 	if (typeof GM_deleteValue == 'undefined') {
 		return localStorage.getItem('basic') == 'true';
 	} else {
 		return GM_getValue('basic')?true:false;
 	}
+     */
 }
 
 function checkVersion() {
@@ -76,7 +75,7 @@ function link() {
 	a.innerHTML = host.innerHTML;
 	var name = this.parentNode.parentNode.firstChild.firstChild;
 	a.setAttribute('href', decodeURIComponent(decodeURIComponent(name.href.match(/imgrefurl=([^&]+)/)[1])));
-	a.setAttribute('style', "text-decoration: inherit; color: inherit");
+	//a.setAttribute('style', "text-decoration: inherit; color: inherit");
 	a.addEventListener('mouseup', cleanURL, false);
 	host.replaceChild(a, host.firstChild);
 	try {
@@ -104,7 +103,7 @@ function oldLinks() {
 	    
 		a = document.createElement('a');
 		a.innerHTML = host.innerHTML;
-		a.setAttribute('style', "text-decoration: inherit; color: inherit");
+		//a.setAttribute('style', "text-decoration: inherit; color: inherit");
 
 		a.setAttribute('href', decodeURIComponent(decodeURIComponent(img.href.match(/imgrefurl=([^&]+)/)[1])));
 
@@ -130,17 +129,19 @@ function cleanClick(e) {
 	}
 }
 
-var n = document.getElementById("rg_hr");
+function main()
+{
+    var n = document.getElementById("rg_hr");
 
-checkVersion();
-changeVersion();
-
-//if ((/&sout=1/).test(document.location.href)) {
-if (true) { // force old stuff, for now. -ml
+    checkVersion();
+    changeVersion();
+    
+    //if ((/&sout=1/).test(document.location.href)) {
+    if (true) { // force old stuff, for now.
 	oldLinks();
-} else if (n) {
+    } else if (n) {
 	setTrig();
-} else if (n = evalNode('//input[@name="bih"]')) {
+    } else if (n = evalNode('//input[@name="bih"]')) {
 	if (basicVersion()) {
 		var i = document.createElement('input');
 		i.setAttribute('type', 'hidden');
@@ -148,7 +149,7 @@ if (true) { // force old stuff, for now. -ml
 		i.setAttribute('value', '1')
 		n.parentNode.appendChild(i);
 	}
-} else {
+    } else {
 	var link = document.getElementById('thumbnail');
 	if (!link) {
 		link = evalNode('//ul[@class="il_ul"]/li/a');
@@ -157,8 +158,15 @@ if (true) { // force old stuff, for now. -ml
 		}
 		window.location.replace(link.href);
 	}
+    }
 }
 
+// dark style:
+//   body { background-color:#000; color:#fff}
+//   #leftnav a {color:#888}
+//   a:link { color:#1122ff }
+
+document.addEventListener('DOMContentLoaded', main, false); 
 document.addEventListener('click', cleanClick, false);
 
-})();
+})(window.document, window.location, window.setTimeout);

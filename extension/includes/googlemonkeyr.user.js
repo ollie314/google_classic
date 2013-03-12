@@ -4,21 +4,21 @@
 // @name           GoogleMonkeyR
 // @namespace      http://www.monkeyr.com
 // @description    Google - Multiple columns of results, Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
-// @include        http://www.google.*/webhp?*
-// @include        http://www.google.*/search?*
-// @include        http://www.google.*/ig?*
-// @include        http://www.google.*/
-// @include        http://www.google.*/#*
-// @include        https://www.google.*/webhp?*
-// @include        https://www.google.*/search?*
-// @include        https://www.google.*/ig?*
-// @include        https://www.google.*/
-// @include        https://www.google.*/#*
+// @include        http*://www.google.*/webhp?*
+// @include        http*://www.google.*/search?*
+// @include        http*://www.google.*/ig?*
+// @include        http*://www.google.*/
+// @include        http*://www.google.*/#*
 // @include        https://encrypted.google.*/webhp?*
 // @include        https://encrypted.google.*/search?*
 // @include        https://encrypted.google.*/ig?*
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
+// 
+// exclude google images:
+// @exclude        http*://www.google.*/search?*&um=1*
+// @exclude        https://encrypted.google.*/search?*&um=1*
+//
 // @uso:script     9310
 // @scriptsource   https://github.com/lemonsqueeze/google_classic/raw/master/google_search/googlemonkeyr.user.js
 // @upstreamscriptsource   http://userscripts.org/scripts/show/9310
@@ -361,7 +361,8 @@ EndHistory */
 /**
  * Processing of the current page.
  **/
-(function(){
+(function(document, location, navigator,
+	  setTimeout, clearTimeout){
 var UIL =
     {
     scriptName : "GoogleMonkeyR",
@@ -376,7 +377,7 @@ var UIL =
         if(pageType !== null)
         {
             this.registerControls();
-            this.processPage(pageType);
+            //this.processPage(pageType);
         }
         else
         {
@@ -445,9 +446,9 @@ var UIL =
         }
         this.externalLinks(document, UIL.Config.getExtLinkiGoogle());
     },
-
-    searchPageProcessor : function()
-    {    
+    
+    searchPage_load_styles : function()
+    {
         this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #cnt #center_col, #cnt #foot, .mw {width:auto !important; max-width:100% !important;} #rhs {left:auto; !important}#botstuff .sp_cnt,#botstuff .ssp{display:none} .s{max-width:98%!important;} .vshid{display:inline} #res h3.r {white-space:normal}");
         if(UIL.Config.getHideSearch())
         {
@@ -460,7 +461,30 @@ var UIL =
         // Hide useless "Everything toolbar"
 	if (true)
 	    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); div#modeselector {display:none;} div.lnsec{border-top:0;}");
+
+        // this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #center_col, #foot {margin-right: 0 !important;} #rhs, #tads, #topstuff table.ts, #bottomads{display:none;}");
+
+	if(UIL.Config.getSearchesRelatedTo())
+	{
+	    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #botstuff #brs{display:none;} #topstuff .tqref{display:none;}");	    
+	}
 	
+	if(UIL.Config.getRemSearchTools())
+	{
+	    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #leftnav {display:none} #center_col {margin-left:0 !important}");
+	}
+	
+	if(UIL.Config.getNumResults())
+	{
+	    this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #res h3.r {display:inline}");
+	}
+
+	// rhs ads
+	this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");	
+    },
+
+    remove_ads: function()
+    {
         //  if(UIL.Config.getRemSponsor())
 	if (true)
         {
@@ -468,36 +492,19 @@ var UIL =
               var tr = document.getElementByXPath("//table[@id='mn']//tr");
 	      if (tr)
 	      {
-		  var td = tr.childNodes[2];
-		  td.width = 100;
+		  tr.childNodes[1].width = 673; // center column (default 573)
+		  tr.childNodes[2].width = 0;   // right ads
 	      }
-	
-//            this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #center_col, #foot {margin-right: 0 !important;} #rhs, #tads, #topstuff table.ts, #bottomads{display:none;}");
-
-	    // rhs ads
-            this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");
 
 	    // top and bottom ads
 	    var elems = document.getElementsByXPath("//div[@id='center_col']/div/h2[@class='spon']");
 	    for (var i = 0; elems[i]; i++)
-		elems[i].parentNode.style.display = "none";
+		elems[i].parentNode.style.display = "none";	      
         }
+    },
 
-		if(UIL.Config.getSearchesRelatedTo())
-		{
-			this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #botstuff #brs{display:none;} #topstuff .tqref{display:none;}");
-		}
-
-		if(UIL.Config.getRemSearchTools())
-		{
-			this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #leftnav {display:none} #center_col {margin-left:0 !important}");
-		}
-
-		if(UIL.Config.getNumResults())
-		{
-			this.addStyle("@namespace url(http://www.w3.org/1999/xhtml); #res h3.r {display:inline}");
-		}
-
+    searchPageProcessor : function()
+    {    
         this.externalLinksResults = UIL.Config.getExtLinkSearch();
 
 //        this.searchLinkTracking = UIL.Config.getSearchLinkTracking();
@@ -1986,14 +1993,14 @@ UIL.RES =
 /* Prototypes and additional document functions */
 document.getElementByXPath = function(XPath, contextNode)
 {
-    var a = this.evaluate(XPath, (contextNode || this), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    var a = this.evaluate(XPath, (contextNode || this), null, window.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     return (a.snapshotLength ? a.snapshotItem(0) : null);
 };
 
 document.getElementsByXPath = function(XPath, contextNode)
 {
     var ret=[], i=0;
-    var a = this.evaluate(XPath, (contextNode || this), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    var a = this.evaluate(XPath, (contextNode || this), null, window.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     while(a.snapshotItem(i))
     {
         ret.push(a.snapshotItem(i++));
@@ -2373,10 +2380,39 @@ var BrowserDetect = {
 	]
 
 };
-/* Run the browser detect script */
-BrowserDetect.init();
-/* Run the update check */
-UIL.UI.updateCheckRequest();
-/* Run the script */
-UIL.init();
-})();
+
+function on_document_ready(f)
+{
+    function check_ready()
+    {
+	if (document.body)
+	    f();
+	else
+	    setTimeout(check_ready, 50);
+    }
+    setTimeout(check_ready, 50);
+}
+
+function main()
+{
+   /* Run the browser detect script */
+   BrowserDetect.init();
+   /* Run the update check */
+   UIL.UI.updateCheckRequest();
+   /* Run the script */
+   UIL.init();
+   UIL.searchPage_load_styles();
+}
+
+function dom_loaded()
+{
+    UIL.remove_ads();
+    UIL.searchPageProcessor();
+}
+
+on_document_ready(main);
+document.addEventListener('DOMContentLoaded', dom_loaded, false);   
+
+
+})(window.document, window.location, window.navigator,
+   window.setTimeout, window.clearTimeout);

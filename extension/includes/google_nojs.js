@@ -4,16 +4,12 @@
 // @version 1.0
 // @description Disable javascript just on google search.
 // @published 2013-01-09 11:00
-// @include        http://www.google.*/webhp?*
-// @include        http://www.google.*/search?*
-// @include        http://www.google.*/ig?*
-// @include        http://www.google.*/
-// @include        http://www.google.*/#*
-// @include        https://www.google.*/webhp?*
-// @include        https://www.google.*/search?*
-// @include        https://www.google.*/ig?*
-// @include        https://www.google.*/
-// @include        https://www.google.*/#*
+// @include        http*://images.google.*/*
+// @include        http*://www.google.*/webhp?*
+// @include        http*://www.google.*/search?*
+// @include        http*://www.google.*/ig?*
+// @include        http*://www.google.*/
+// @include        http*://www.google.*/#*
 // @include        https://encrypted.google.*/webhp?*
 // @include        https://encrypted.google.*/search?*
 // @include        https://encrypted.google.*/ig?*
