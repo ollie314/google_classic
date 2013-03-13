@@ -3,7 +3,7 @@ DIR=extension
 EXT=google_classic-$(VERSION).oex
 INCLUDES=$(shell echo $(DIR)/includes/*.js)
 #VERS_MAG=$(shell cat ../scriptweeder.js | grep 'var version' | sed -e "s|.*v\([0-9.]\+\)'.*|\1|")
-VERSION=0.1
+VERSION=1.0
 
 all: $(EXT)
 
