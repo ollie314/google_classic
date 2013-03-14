@@ -6,18 +6,18 @@
 // @description    Google - Multiple columns of results, Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
 // @include        http*://www.google.*/webhp?*
 // @include        http*://www.google.*/search?*
-// @include        http*://www.google.*/ig?*
 // @include        http*://www.google.*/
 // @include        http*://www.google.*/#*
 // @include        https://encrypted.google.*/webhp?*
 // @include        https://encrypted.google.*/search?*
-// @include        https://encrypted.google.*/ig?*
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
 // 
-// exclude google images:
+// Exclude google images and igoogle:
 // @exclude        http*://www.google.*/search?*&um=1*
 // @exclude        https://encrypted.google.*/search?*&um=1*
+// @exclude        http*://www.google.*/ig?*
+// @exclude        https://encrypted.google.*/ig?*
 //
 // @uso:script     9310
 // @scriptsource   https://github.com/lemonsqueeze/google_classic/raw/master/google_search/googlemonkeyr.user.js

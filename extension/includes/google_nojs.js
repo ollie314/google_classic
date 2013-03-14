@@ -7,14 +7,16 @@
 // @include        http*://images.google.*/*
 // @include        http*://www.google.*/webhp?*
 // @include        http*://www.google.*/search?*
-// @include        http*://www.google.*/ig?*
 // @include        http*://www.google.*/
 // @include        http*://www.google.*/#*
 // @include        https://encrypted.google.*/webhp?*
 // @include        https://encrypted.google.*/search?*
-// @include        https://encrypted.google.*/ig?*
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
+//
+// leave igoogle alone:
+// @exclude        http*://www.google.*/ig?*
+// @exclude        https://encrypted.google.*/ig?*
 // ==/UserScript==
 
 (function(document) {
