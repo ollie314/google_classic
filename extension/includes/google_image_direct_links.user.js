@@ -16,6 +16,9 @@
 
 (function (document, location, setTimeout, scriptStorage) {
 
+if (window != window.top) // don't run in iframes
+    return;
+    
 function evalNodes(path) {
 	return document.evaluate(path, document, null, window.XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 }

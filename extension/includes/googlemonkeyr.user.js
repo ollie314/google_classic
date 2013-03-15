@@ -363,6 +363,10 @@ EndHistory */
  **/
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
+
+if (window != window.top)
+    return;  // don't run in iframes
+    
 var UIL =
     {
     scriptName : "GoogleMonkeyR",
