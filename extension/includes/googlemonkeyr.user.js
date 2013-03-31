@@ -27,6 +27,29 @@
 if (window != window.top)
     return;  // don't run in iframes
 
+function get_setting(name, default_value)
+{
+    var val = widget.preferences.getItem(name);
+    val = (!val && default_value ? default_value : val);
+    return (val ? val : '');
+}
+
+function set_setting(name, value)
+{
+    widget.preferences.setItem(name, value);
+}
+
+function get_bool_setting(name, default_value)
+{
+    var c = get_setting(name);
+    return (c != '' ? c == 'y' : default_value);
+}
+
+function set_bool_setting(name, val)
+{
+    set_setting(name, (val ? 'y' : 'n'));
+}
+
 function addStyle(css)
 {
     var heads = document.getElementsByTagName("head");
@@ -77,6 +100,12 @@ document.buildElement = function(type, atArr, inner, action, listen)
     return e;
 };
 
+var prefs = {};
+function load_prefs()
+{
+    prefs.favicons = get_bool_setting("favicon", false);
+}
+
 function load_styles()
 {
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); #cnt #center_col, #cnt #foot, .mw {width:auto !important; max-width:100% !important;} #rhs {left:auto; !important}#botstuff .sp_cnt,#botstuff .ssp{display:none} .s{max-width:98%!important;} .vshid{display:inline} #res h3.r {white-space:normal}");
@@ -110,7 +139,9 @@ function load_styles()
 
 
     // results styling
-    return;
+    //if (get_bool_setting("favicon"))
+    //return;
+    
     var hue = "#E5ECF9";  // UIL.Config.getResHue();
     if (hue.length==0)
 	hue = "transparent";
@@ -172,6 +203,16 @@ function process_link(list, i, resLength)  // was resultsToTable()
 	
 	a.removeAttribute("onmousedown");
 
+	if (prefs.favicons)
+	{
+	    var base = a.href.match(/http:\/\/([\w\.\-]+)\//);
+	    if(base){
+		var fav = document.buildElement('img', {width:'16',height:'16',style:'margin-bottom:-3px;', src:'http://www.google.com/s2/favicons?domain=' + encodeURIComponent(base[1])});
+		a.parentNode.insertBefore(fav, a);
+		a.parentNode.insertBefore(document.createTextNode(' '), a);
+	    }
+	}	
+
 	var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid']", link);
 //			var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid'] | .//div[@class='s']//span[@class='flc']", link);
 	if (ele)
@@ -213,6 +254,7 @@ function on_document_ready(f)
 
 function main()
 {
+    load_prefs();
     load_styles();
 }
 

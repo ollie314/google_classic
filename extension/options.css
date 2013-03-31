@@ -1,0 +1,83 @@
+.body {
+	margin:0;
+	padding:0;
+	font-size:12px;
+	font-family:"Lucida Grande", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+	color:#333;
+	width: 550px;
+	margin: 0 auto;
+}
+#colorpicker {
+	position: absolute;
+	border: #000000 1px solid;
+	background: #FFFFFF;
+	display: none;
+	z-index: 10002;
+}
+.module {
+	border: 1px solid #ccc;
+	margin-bottom: 5px;
+	background-color: #fff;
+}
+.module h2, .module caption {
+	margin: 0;
+	padding: 2px 5px 3px 5px;
+	font-size: 11px;
+	font-weight: bold;
+	background: #CCCCCC url("data:image/gif;base64,R0lGODlhAQAWAMQAAMjKysXHx9%2Fh4c%2FR0ePl5cbIyNPV1c3Pz%2Bfp6d7h4e7w8Ovt7cvNzdfZ2eHj49vd3fDy8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABABYAAAUSICQqC0IIT3MEBcAMRvMkjhMCADs%3D") top left repeat-x;
+	color: #666666;
+	border-bottom: 0;
+}
+.form-row {
+	overflow: hidden;
+	padding: 8px 12px;
+	margin-top:3px;
+	font-size: 11px;
+	border-bottom: 1px solid #eee;
+	border-right: 1px solid #eee;
+}
+.form-row img, .form-row input {
+	vertical-align: middle;
+	margin-top: 0
+}
+.aligned label {
+	padding: 0 1em 3px 0;
+	float: left;
+	width: auto;
+}
+.checkbox-row label {
+	padding: 0;
+	float: none;
+	width: auto;
+}
+.body input.btn {
+	padding: 0px 10px 0px 10px;
+	color: #999999;
+	background-color: White;
+	font-weight: bold;
+	border: solid 1px #CCCCCC;
+	text-align: center;
+	font-size:12px;
+}
+.body input.btn:hover {
+	padding: 1px 11px 1px 11px;
+	color: #333333;
+	border-color: #666666;
+}
+.body a {
+	font-weight: bold;
+	color: #999999;
+	text-decoration: none;
+	cursor: pointer;
+}
+.body a:hover {
+	font-weight: bold;
+	color: #333333 !important;
+	text-decoration: none;
+}
+.body img.l2r {
+	background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAMAAAAc9R5vAAAABGdBTUEAAK%2FINwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAYUExURf97e%2F%2FJyTUAAP87O7oAAP8AAAAAAP%2F%2F%2F%2BVYFu4AAABySURBVHjarJFLDoAwCET5td7%2FxiZ8rIA2LpwVGXgpTOF4EWwaM5TKLSEu5qic4FHEQdQGtTdAfWxboc%2FXrVAfg3YHqS%2F9Do6FCiFrPhF5fhE6z9Syuh2QCHK%2FpmuHAV5ygiysD%2BkOI6j5Y%2F795886BRgA%2F5sN2H8r99QAAAAASUVORK5CYII%3D") no-repeat transparent;
+}
+.body img.t2b {
+	background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAMAAAAc9R5vAAAABGdBTUEAAK%2FINwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAMUExURf9%2Ff%2F8AAAAAAP%2F%2F%2FyCZFIoAAABwSURBVHjalNJLDsAgCATQGXv%2FOzflX8EmZUWQFxXFdQh8LCyPV6oCBVqugkwhuQmQ0U%2FLRTAFOYqnfxRSH4TWuwBnIXWgCe%2Fehfbnfi4ksHy%2FFHGcSdjYmojLb8Km20QZ7zjdXZQHrOL85n%2B%2Bzy3AAE%2F6BSjaFBabAAAAAElFTkSuQmCC") no-repeat transparent;
+}
