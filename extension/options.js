@@ -26,12 +26,19 @@ function update_bool_setting()
     set_bool_setting(this.name, this.checked);
 }
 
+function setup_checkbox(name)
+{
+    var checkbox = form.elements.namedItem(name);
+    checkbox.checked = get_bool_setting(name);
+    checkbox.onclick = update_bool_setting;
+}
+
+var form;
 function init()
 {
-    var form = document.getElementById("preferences");
-    
-    form.elements.namedItem("favicon").checked = get_bool_setting("favicon");
-    form.elements.namedItem("favicon").onclick = update_bool_setting;
+    form = document.getElementById("preferences");
+    setup_checkbox("favicon");
+    setup_checkbox("autoload");    
 }
 
 function orig_init()
