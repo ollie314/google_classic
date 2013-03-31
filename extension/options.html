@@ -18,43 +18,21 @@
       </tbody>
     </table>
     <div class="form-row checkbox-row">
-      <label for="numcol1">
-        <input name="numcol" value="1" id="numcol1" type="radio">
-        1 column </label>
-      &nbsp;&nbsp;
-      <label for="numcol2">
-        <input name="numcol" value="2" id="numcol2" type="radio">
-        2 columns</label>
-      &nbsp;&nbsp;
-      <label for="numcol3">
-        <input name="numcol" value="3" id="numcol3" type="radio">
-        3 columns</label>
-      &nbsp;&nbsp;
-      <label for="numcol4">
-        <input name="numcol" value="4" id="numcol4" type="radio">
-        4 columns</label>
-      &nbsp;&nbsp;( of results )&nbsp;&nbsp;&nbsp;<a href="javascript:;"><img id="flowimg" name="flowimg" class="l2r" title=" flow of results " border="0" style="width:24px;	height:25px;	margin-top:-4px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAMAAAAc9R5vAAAABGdBTUEAAK%2FINwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAGUExURf%2F%2F%2FwAAAFXC034AAAABdFJOUwBA5thmAAAAEUlEQVR42mJgGAWjgI4AIMAAAnEAAfWgarkAAAAASUVORK5CYII%3D"></a></div>
-    <div class="form-row checkbox-row"> Remove:<br><br>
-      <label for="remsearchesrelatedto">
-        <input name="remsearchesrelatedto" id="remsearchesrelatedto" type="checkbox">
-        "Related Searches"</label>
-      &nbsp;
-      <label for="remsponsor">
-        <input name="remsponsor" id="remsponsor" type="checkbox">
-        "Sponsored Links"</label>
-      &nbsp;
-      <label for="remsearchtools">
-        <input name="remsearchtools" id="remsearchtools" type="checkbox">
-        "Search Tools"</label>
-      &nbsp;
-      <label for="noSitePreview">
-        <input name="noSitePreview" id="noSitePreview" type="checkbox">
-        "Site Preview"</label>
+      Results background color&nbsp;&nbsp;&nbsp;
+      <a href="javascript:;" id="ResHue">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      <input id="ResHuefield" size="7" maxlength="7">&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="http://www.flooble.com/scripts/colorpicker.php" target="_blank" title=" flooble color picker script " style="font-size: 8px;">flooble</a> 
     </div>
     <div class="form-row checkbox-row">
-      <label for="numresults">
-        <input name="numresults" id="numresults" type="checkbox">
-        Number results ( 1, 2, 3... etc. )</label>
+      <label for="border_radius">
+        Results boxes roundness (0 for squares)&nbsp;&nbsp;&nbsp;&nbsp;
+	<input name="border_radius" id="border_radius" size="2" maxlength="2">
+        </label>
+    </div>
+    <div class="form-row checkbox-row">
+      <label for="favicon">
+        <input name="favicon" id="favicon" type="checkbox">
+        Display favicons</label>
     </div>
     <div class="form-row checkbox-row">
       <label for="autoload">
@@ -62,35 +40,28 @@
         Auto load more results</label>
     </div>
     <div class="form-row checkbox-row">
-      <label for="hidesearch">
-        <input name="hidesearch" id="hidesearch" type="checkbox">
-        Don't display the Google web search dialogues ( I use the Google toolbar instead! )</label>
-    </div>
-    <div class="form-row checkbox-row"> Select the <a href="javascript:;" name="BGBorderlink" id="BGBorderlink" title=" toggle between a background or border hue ">background</a> color ( hue ) for your search results&nbsp;&nbsp;&nbsp; <a href="javascript:;" id="ResHue" style="border: 1px solid rgb(0, 0, 0); font-family: Verdana; font-size: 10px; text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;</a>
-      <input id="ResHuefield" size="7" maxlength="7">
-      &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.flooble.com/scripts/colorpicker.php" target="_blank" title=" flooble color picker script " style="font-size: 8px;">flooble</a> </div>
-    <div class="form-row checkbox-row"> Make my Google links open in a new target &nbsp;
-      <label for="extlinksearch">
-        <input name="extlinksearch" id="extlinksearch" type="checkbox">
-        for search results</label>
-      &nbsp;&nbsp;
-      <label for="extlinkigoogle">
-        <input name="extlinkigoogle" id="extlinkigoogle" type="checkbox">
-        for iGoogle</label>
+      <label for="remove_related_searches">
+        <input name="remove_related_searches" id="remove_related_searches" type="checkbox">
+        Remove "Related Searches"</label>
     </div>
     <div class="form-row checkbox-row">
-      <label for="searchlinktracking">
-        <input name="searchlinktracking" id="searchlinktracking" type="checkbox">
-        Disable Google tracking  my search results </label>
+      <label for="numbers">
+        <input name="numbers" id="numbers" type="checkbox">
+        Number results ( 1, 2, 3... etc. )</label>
     </div>
-    <div class="form-row checkbox-row"> For each result show &nbsp;
-      <input name="favicon" id="favicon" type="checkbox">
-      <label for="favicon"> favicons</label>
-      &nbsp;&nbsp;
-      <input name="imagepreview" id="imagepreview" type="checkbox">
-      <label for="imagepreview"> GooglePreview images</label>
-      &nbsp;
-      &nbsp;&nbsp;<a href="http://www.googlepreview.com/" target="_blank" title=" GooglePreview " style="font-size: 8px;">GooglePreview</a> </div>
+    <div class="form-row checkbox-row">
+      <label for="use_border">
+        <input name="use_border" id="use_border" type="checkbox">
+        Show frame around results instead of background color</label>
+    </div>
+<!--
+    <div class="form-row checkbox-row">
+      <label for="imagepreview">
+	<input name="imagepreview" id="imagepreview" type="checkbox">
+	GooglePreview images</label>
+      &nbsp;&nbsp;&nbsp;<a href="http://www.googlepreview.com/" target="_blank" title=" GooglePreview " style="font-size: 8px;">GooglePreview</a> 
+    </div>
+-->
   </div>
   <div class="module">
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
