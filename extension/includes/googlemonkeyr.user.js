@@ -1,9 +1,9 @@
 // ==UserScript==
 // @author         mungushume, lemonsqueeze
-// @version        1.5.4-google_classic
-// @name           GoogleMonkeyRLight
+// @version        1.5.4-google_classic (Adapted to Google Search with js disabled)
+// @name           GoogleMonkeyR 
 // @namespace      http://www.monkeyr.com
-// @description    Google - Multiple columns of results, Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
+// @description    Google - Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
 // @include        http*://www.google.*/webhp?*
 // @include        http*://www.google.*/search?*
 // @include        http*://www.google.*/
@@ -125,18 +125,12 @@ document.buildElement = function(type, atArr, inner, action, listen)
     for (var at in atArr)
     {
         if (atArr.hasOwnProperty(at))
-        {
             e.setAttribute(at, atArr[at]);
-        }
     }
-    if(action && listen)
-    {
+    if (action && listen)
         e.addEventListener(action, listen, false);
-    }
-    if(inner)
-    {
+    if (inner)
         e.innerHTML = inner;
-    }
     return e;
 };
 
@@ -305,6 +299,15 @@ function process_result(link)  // was resultsToTable()
 
 /******************************************* autoload stuff ********************************************/
 
+function add_page_number(item)
+{
+    autoload.pageno++;    
+    item.style.position = 'relative';
+    var d = document.buildElement('div', {style:"position:absolute; top:5px; left:-70px; color:#999; font-size:16px;"},
+				  "Page " + autoload.pageno);
+    item.appendChild(d);
+}
+
 function process_autoload_results(responseText)
 {
     // alert("now process this stuf ...");
@@ -322,20 +325,25 @@ function process_autoload_results(responseText)
 	autoload.resultStats.innerHTML = stats.innerHTML;
     
     var list = document.getElementsByXPath(".//div[@id='res']/div//li[starts-with(@class,'g')] | .//div[@id='res']/table//li[starts-with(@class,'g')] | .//div[@id='res']/div//li/div[@class='g']", nextResult);
-    var length = list.length;
     for (i = 0; i < list.length; i++)
     {
 	//console.log("adding autoloaded result");
 	var clone = list[i].cloneNode(true);
 	last_result.parentNode.appendChild(clone);
 	process_result(clone);
+	if (i == 0)
+	    add_page_number(clone);	
     }
-
+    
     var isNextExist = document.getElementByXPath(".//table[@id='nav']//td[last()]/a[@href]", nextResult);
     if (isNextExist)
 	autoload.startNumber += autoload.itemsQuantity;
-    else
-	autoload.endText.style.display = 'block';
+
+    // update navbar in case we need it later
+    var navbar = nextResult.querySelector('#nav');
+    autoload.navbar.parentNode.replaceChild(navbar, autoload.navbar);
+    navbar.style.display = 'none';    
+    autoload.navbar = navbar;
     
     autoload.requestingMoreResults = false;
 }
@@ -343,6 +351,7 @@ function process_autoload_results(responseText)
 var autoload = {};
 function autoload_init()
 {
+    autoload.pageno = 1;
     var nextLink = document.getElementByXPath("//table[@id='nav']//td[last()]/a[contains(@href,'start')]");
     if (nextLink)
     {
@@ -359,18 +368,6 @@ function autoload_init()
 	//console.log('watchForScroll');
 	watch_for_scroll();
     }
-}
-
-function insert_end_text()
-{
-    //console.log('insertEndText');
-    var elem = document.buildElement('table',
-				     { id:"endtext" ,width: "100%", cellspacing: "2", cellpadding: "0",
-				       border: "0", "class": "t bt", style:"font-weight:bold;text-decoration:blink"},
-				     "&nbsp;End of the search results");
-    var res = document.getElementById("res");
-    res.parentNode.insertBefore(elem, res.nextSibling);
-    return elem;
 }
 
 function request_more_results()
@@ -403,8 +400,9 @@ function watch_for_scroll()
 
 function autoload_error()
 {
-    var div = document.buildElement('div', {style:"width:114px;height:34px;background-repeat:no-repeat;margin:2em auto auto auto;padding:10px;display:block;"});
-    var p = document.buildElement('p', {style:"font-size:130%;font-weight:bold;padding:5px 0 0 40px;margin:0"}, "Error");
+    autoload.navbar.style = 'display:auto;';
+    var div = document.buildElement('div', {style:"width:250px;height:34px;background-repeat:no-repeat;margin:2em auto auto auto;padding:10px;display:block;"});
+    var p = document.buildElement('p', {style:"font-size:130%;font-weight:bold;padding:5px 0 0 40px;margin:0"}, "Error loading results");
     div.appendChild(p);
     autoload.loadingImage.parentNode.replaceChild(div, autoload.loadingImage);
     autoload.loadingImage = div;
@@ -414,10 +412,11 @@ function insert_loading_image()
 {
     //console.log('insertLoadingImage');
     var nextLink = document.getElementByXPath("//table[@id='nav']//td[last()]/a");
-    var navbar = document.querySelector('#nav');   // why is he doing something complicated like this:
+    var navbar = document.querySelector('#nav');   // why is he doing something so complicated:
     // var navbar = document.getElementByXPath("//table[@id='nav']//td/ancestor::table");
     if (navbar)
     {
+	autoload.navbar = navbar;
 	navbar.style.display = "none";
 	if (!autoload.loadingImage)
 	{
@@ -429,9 +428,6 @@ function insert_loading_image()
 	}
     }
     
-    if (!autoload.endText)
-	autoload.endText = insert_end_text();
-    autoload.endText.style.display = (nextLink && (nextLink.href.indexOf('start=') != -1) ? 'none' : 'block');
     //console.log('insertLoadingImage '+nextLink);
     return nextLink;
 }
