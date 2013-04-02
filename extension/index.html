@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+
+  function post_message(dest, msg)
+  {
+      try
+      {   // can get DOMException: INVALID_STATE_ERR if tab's in a weird state    
+          dest.postMessage(msg);
+      }
+      catch(e) {}      
+  }
+
+  function show_options()
+  {
+      var tab = opera.extension.tabs.create({url:"options.html"});
+      if (tab.focus)  // opera 11 doesn't have it
+	  tab.focus();
+  }
+
+  function messaged(e)
+  {
+      var m = e.data;
+      if (m == "show_options")
+	  show_options();
+  }
+     
+  function connected(e)
+  {
+      post_message(e.source, "bgproc");
+  }
+     
+  function loaded()
+  {
+      // when an injected script loads, background process gets a connect event      
+      opera.extension.onconnect = connected;
+      opera.extension.onmessage = messaged;
+  }
+
+  window.addEventListener("load", loaded, false);
+
+</script>
+</head>
+<body>
+</body>
+</html>

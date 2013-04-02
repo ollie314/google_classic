@@ -215,6 +215,68 @@ function remove_ads()
 	elems[i].parentNode.style.display = "none";	      
 }
 
+/****************************************** menu ********************************************/
+
+var menu;
+function create_menu(link)
+{
+    var parent = link.parentNode;
+    parent.style = "position:relative;";    
+    addStyle(menu_style);	     
+
+    menu = document.buildElement('div', {}, menu_html);
+    parent.appendChild(menu);
+
+    var links = menu.getElementsByTagName('a');
+    links[0].onclick = show_options;    // google classic options
+    links[1].href = link.href;          // normal search preferences    
+    links[2].href = "/advanced_search";
+}
+
+function hide_menu()
+{
+    menu.style = 'display:none;';
+    window.removeEventListener('click', hide_menu, false);
+}
+
+function show_menu(e)
+{
+    if (!menu)
+	create_menu(this);
+    menu.style = 'display:auto;';
+    window.addEventListener('click', hide_menu, false);    
+    e.preventDefault();
+}
+
+var menu_style =
+"@namespace url(http://www.w3.org/1999/xhtml); "+
+".menu_dropdown { background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.196); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.196); font-size: 13px; padding: 0px 0px 6px; position: absolute; right: 0px; top: 28px; transition: opacity 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0; white-space: nowrap; z-index: 3; } " +
+".menu_dropdown a { text-decoration:none; display: block; padding: 8px 20px 8px 16px; } " +
+".menu_dropdown a, .menu_dropdown a:visited, .menu_dropdown a:hover { color: #333333;} " +
+".menu_dropdown a:hover {background-color:#eee; text-decoration:none;} ";
+
+// TODO use current page language !
+var menu_html =
+'<div class="menu_dropdown">'+
+'  <ul>'+
+'    <li><a>Google Classic</a></li>'+
+'    <li><a>Search Settings</a></li>'+
+'    <li><a href="/advanced_search?q=foo&hl=en">Advanced Search</a></li>'+
+'    <li><a href="/history/optout?hl=en">Web History</a></li>'+
+'    <li><a href="http://www.google.com/support/websearch/?source=g&hl=en">Search Help</a></li>'+
+'  </ul>'+
+'</div>';
+
+function init_menu()
+{
+    var a = document.querySelector("#gbg5");
+    if (!a)
+	return;
+    a.onclick = show_menu;
+}
+
+/****************************************** menu end ********************************************/
+
 function get_starting_number()
 {
     var start = window.location.href.match(/start=(\d+)/);
@@ -493,7 +555,24 @@ var LOADING_GIF =
 "2IArqpwktKDCQXiGLLSCQivkuCYNmSGu4FOm03QdoJZH0mFQ5ag4gnEg4ODYyODQ%2BDFhKVlpaJmTAWFHGJFJaefRMSEROidqQR"+
 "dZoXEqytsbKztLW2t7i5tCEAOw%3D%3D";
 
-/******************************************* autoload stuff end ********************************************/
+
+/***************************************** extension messaging ********************************************/
+
+var bgproc;
+function extension_message(e)
+{
+    var m = e.data;
+    if (!bgproc)
+	bgproc = e.source;
+}
+
+function show_options()
+{
+    bgproc.postMessage("show_options");
+}
+
+
+/************************************************** init *************************************************/
 
 function on_document_ready(f)
 {
@@ -514,14 +593,20 @@ function main()
 }
 
 function dom_loaded()
-{
+{    
     remove_ads();
+    init_menu();
     search_page_processor();
 }
 
-on_document_ready(main);
-document.addEventListener('DOMContentLoaded', dom_loaded, false);   
+function setup_handlers()
+{
+    opera.extension.onmessage = extension_message;
+    on_document_ready(main);
+    document.addEventListener('DOMContentLoaded', dom_loaded, false);
+}
 
+setup_handlers();
 
 })(window.document, window.location, window.navigator,
    window.setTimeout, window.clearTimeout);
