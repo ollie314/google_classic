@@ -1,6 +1,6 @@
 // ==UserScript==
 // @author         mungushume, lemonsqueeze
-// @version        1.5.4-google_classic (Adapted to Google Search with js disabled)
+// @version        1.5.4-google_classic (Ported to nojs Google Search)
 // @name           GoogleMonkeyR 
 // @namespace      http://www.monkeyr.com
 // @description    Google - Remove "Sponsored Links", Number results, Auto-load more results, Remove web search dialogues, Open external links in a new tab, self updating and all configurable from a simple user dialogue.
@@ -24,6 +24,9 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
+var version_number = "1.3";
+var version_date = "$Date Apr 10 2013 $";
+    
 if (window != window.top)
     return;  // don't run in iframes
 
@@ -48,6 +51,11 @@ function get_bool_setting(name, default_value)
 function set_bool_setting(name, val)
 {
     set_setting(name, (val ? 'y' : 'n'));
+}
+
+function my_alert(msg)
+{
+    alert("Google Classic\n\n" + msg);    
 }
 
 function addStyle(css)
@@ -229,7 +237,7 @@ function create_menu(link)
 
     var links = menu.getElementsByTagName('a');
     links[0].onclick = show_options;    // google classic options
-    links[1].href = link.href;          // normal search preferences    
+    links[1].href = link.url;          // normal search preferences    
     links[2].href = "/advanced_search";
 }
 
@@ -273,6 +281,8 @@ function init_menu()
     if (!a)
 	return;
     a.onclick = show_menu;
+    a.url = a.href;
+    a.href = "javascript:;";
 }
 
 /****************************************** menu end ********************************************/
@@ -586,8 +596,19 @@ function on_document_ready(f)
     setTimeout(check_ready, 50);
 }
 
+function startup_checks()
+{
+    if (get_setting("version_number") != version_number)
+    {
+	my_alert("It's now possible to customize look and feel "+
+		 "through the extension's Preferences or Google's settings button, enjoy !");
+	set_setting("version_number", version_number);
+    }
+}
+
 function main()
 {
+    startup_checks();
     load_prefs();
     load_styles();
 }
