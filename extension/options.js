@@ -39,7 +39,9 @@ var colorPicker =
   perline : 5,
   divSet : false,
   curId : null,
+  pickerId : 'colorpicker',
   colorLevels : Array('A', 'B', 'C', 'D', 'E', 'F'),
+  defaultColor: '#e5ecf9',
   colorArray : Array(),
 
   addColor : function(r, g, b) {
@@ -51,7 +53,7 @@ var colorPicker =
     return function(){
 	var link = document.getElementById(that.curId);
 	var field = document.getElementById(that.curId + 'field');
-	var picker = document.getElementById('colorpicker');
+	var picker = document.getElementById(this.pickerId);
 	field.value = color;
 	field.onchange({srcElement:field}); // fake event
 	if (color == '') {
@@ -71,10 +73,11 @@ var colorPicker =
     if (!document.createElement) { return; }
     this.genColors();
 
-    var div = document.buildElement('div',{id:'colorpicker'});
+    var div = document.buildElement('div',{id:this.pickerId, 'class':'colorpicker'});
     var spn = document.buildElement('span',{style:"font-family:Verdana; font-size:11px;"});
     var a1 = document.buildElement('a',{href:"javascript:;"},'No color','click',this.setColor(''));
-    var a2 = document.buildElement('a',{href:"javascript:;", style:"margin-left:5px;"},'Default','click',this.setColor('#e5ecf9'));
+    var a2 = document.buildElement('a',{href:"javascript:;", style:"margin-left:5px;"},'Default',
+				   'click',this.setColor(this.defaultColor));
     spn.appendChild(a1);
     spn.appendChild(a2);    
     spn.appendChild(this.getColorTable());
@@ -83,10 +86,10 @@ var colorPicker =
     this.divSet = true;
     },
 
-  pickColor : function(id) {
-    id = 'ResHue';
+  pickColor : function(event) {
+    var id = event.target.id;
     if (!this.divSet) { this.setDiv(id); }
-    var picker = document.getElementById('colorpicker');
+    var picker = document.getElementById(this.pickerId);
     if (id == this.curId && picker.style.display == 'block') {
 	picker.style.display = 'none';
 	return;
@@ -194,18 +197,12 @@ document.buildElement = function(type, atArr, inner, action, listen)
     for (var at in atArr)
     {
         if (atArr.hasOwnProperty(at))
-        {
             e.setAttribute(at, atArr[at]);
-        }
     }
-    if(action && listen)
-    {
+    if (action && listen)
         e.addEventListener(action, listen, false);
-    }
-    if(inner)
-    {
+    if (inner)
         e.innerHTML = inner;
-    }
     return e;
 };
 
@@ -217,6 +214,34 @@ Function.prototype.bind = function(object)
     {
         __method.apply(object, arguments);
     }
+};
+
+
+function clone(obj)
+{
+    var copy = {};
+    for (var attr in obj) {
+	if (obj.hasOwnProperty(attr))
+	{
+	    if (typeof obj[attr] == 'function')
+		copy[attr] = obj[attr];
+	    else
+		copy[attr] = JSON.parse(JSON.stringify(obj[attr]));
+	}
+    }
+    return copy;
+}
+
+var darkPicker = clone(colorPicker);
+darkPicker.pickerId = 'darkpicker';
+darkPicker.colorLevels = Array('0', '1', '2', '3', '4', '5');
+darkPicker.defaultColor = '#222';
+darkPicker.genColors = function()
+{
+    for (a = 0; a < this.colorLevels.length-1; a++)
+	this.addColor(a,a,a);
+
+    return this.colorArray;
 };
 
 
@@ -244,32 +269,48 @@ function setup_field(name, default_value)
 
 function color_changed(e)
 {
-    //alert("changed!");    
-    colorPicker.relateColor('ResHue')(e);
-    var value = e.srcElement.value;
+    //alert("changed!");
+    var field = e.srcElement;
+    colorPicker.relateColor(field.div_id)(e);
+    var value = field.value;
     value = (value == '' ? 'none' : value);
-    set_setting("background_color", value);
+    set_setting(field.setting, value);
 }
 
 var form;
 function init()
 {
+    // Google Search    
     form = document.getElementById("preferences");
     setup_checkbox("favicon");
     setup_checkbox("autoload");
     setup_checkbox("use_border");
     setup_checkbox("remove_related_searches");
     setup_checkbox("numbers");
-
     setup_field("border_radius", 10);
     
     var field = document.getElementById("ResHuefield");
     document.getElementById("ResHue").addEventListener("click", colorPicker.pickColor.bind(colorPicker), false);
+    field.div_id = 'ResHue';
+    field.setting = "background_color";
     field.onchange = color_changed;
-    field.value = get_setting("background_color", "#e5ecf9");
+    field.value = get_setting(field.setting, "#e5ecf9");
     field.onchange({srcElement:field});
+
+    // Google Images
+    form = document.getElementById("images_preferences");
+    setup_checkbox("images_night_mode");    
+    
+    var field = document.getElementById("NightHuefield");
+    document.getElementById("NightHue").addEventListener("click", darkPicker.pickColor.bind(darkPicker), false);
+    field.div_id = 'NightHue';
+    field.setting = "images_night_bgcolor";
+    field.onchange = color_changed;
+    field.value = get_setting(field.setting, "#222");
+    field.onchange({srcElement:field});    
 }
 
+/*
 function orig_init()
 {
     var form = document.getElementById("preferences");
@@ -310,5 +351,6 @@ function orig_init()
 	this.updateLink(false);
     }
 }
+*/
 
 init();

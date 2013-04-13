@@ -23,7 +23,7 @@ red		 { color:#f13238; }
 yellow, header a { color:#febe20; }
 green		 { color:#06ae20; }
 
-#colorpicker {
+.colorpicker {
 	position: absolute;
 	border: #000000 1px solid;
 	background: #FFFFFF;
@@ -31,5 +31,5 @@ green		 { color:#06ae20; }
 	z-index: 10002;
 }
 
-#ResHue { padding:0px 10px; border: 1px solid rgb(0, 0, 0); font-family: Verdana; font-size: 1em; text-decoration: none; }
+.colordisplay { padding:0px 10px; border: 1px solid rgb(0, 0, 0); font-family: Verdana; font-size: 1em; text-decoration: none; }
 

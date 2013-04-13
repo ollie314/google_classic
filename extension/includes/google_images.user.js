@@ -27,7 +27,30 @@
 
 if (window != window.top) // don't run in iframes
     return;
-    
+
+function get_setting(name, default_value)
+{
+    var val = widget.preferences.getItem(name);
+    val = (!val && default_value ? default_value : val);
+    return (val ? val : '');
+}
+
+function set_setting(name, value)
+{
+    widget.preferences.setItem(name, value);
+}
+
+function get_bool_setting(name, default_value)
+{
+    var c = get_setting(name);
+    return (c != '' ? c == 'y' : default_value);
+}
+
+function set_bool_setting(name, val)
+{
+    set_setting(name, (val ? 'y' : 'n'));
+}
+
 function evalNodes(path) {
 	return document.evaluate(path, document, null, window.XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 }
@@ -147,14 +170,21 @@ var common_style =
 "a:link,"+
 "a:visited               { text-decoration: none; }"+
 
+".images_table a img	{"+
+"                            padding: 0 !important;"+
+"                            border: solid #eee 1px !important;"+
+"                            box-shadow: 0 2px 3px hsla(0,0%,0%,0.4);"+
+"                            margin: 1px;"+
+"                        }"+
+
 "/* Image info text pseudo-targeted with overlay! */"+
 ".images_table td:after  { height: 16px; background: hsla(0,0%,100%,0.5); content: ''; display: block; margin-top: -16px; position: relative; z-index: 1; }"+
 
 "";
 
-
-var dark_style =
-"body			{ background-color: #222 !important;}"+
+var night_bgcolor = get_setting("images_night_bgcolor", "#222");
+var night_style =
+"body			{ background-color: " + night_bgcolor + " !important;}"+
 
 "/* Additional parameters indicator strip (eg: 'Large (x)') */"+
 "#tbbc                   { width: 100% !important; display: block !important; "+
@@ -183,15 +213,11 @@ var dark_style =
 "/*-------------Image thumbnail results, also the thumbnails in web results----------------*/"+
 
 ".images_table a img	{"+
-"                            padding: 0 !important;"+
 "                            border: solid #141414 1px !important;"+
-"                            box-shadow: 0 2px 3px hsla(0,0%,0%,0.4);"+
-"                            margin: 1px;"+
 "                        }"+
 
 "/* Image info text pseudo-targeted with overlay! */"+
-".images_table td:after  { height: 16px; background: hsla(0,0%,13%,0.5); content: ''; display: block; margin-top: -16px; position: relative; z-index: 1; }"+
-
+".images_table td:after  { height: 16px; background: "+ to_rgba(night_bgcolor, 0.5) + "; content: ''; display: block; margin-top: -16px; position: relative; z-index: 1; }"+
 
 "/*-------------Sprite (nav_logo117.png), Logos----------------*/"+
 
@@ -216,6 +242,20 @@ var dark_style =
 "#hplogo:not(img)        { content: inherit !important; } /* Keeps country name under logo */"+
 "";
 
+function to_rgba(c, a)
+{
+    var m = c.match(/#(..)(..)(..)/);
+    if (!m)
+    {
+	m = c.match(/#(.)(.)(.)/);
+	if (m)
+	    m = m.map(function(c){ return c + c; });
+    }
+    if (!m)
+	m = [0, '0', '0', '0'];
+    m = m.map(function(c){ return parseInt('0x' + c) + ','; });
+    return ('rgba(' + m[1] + m[2] + m[3] + a + ')');
+}
 
 function add_style(css)
 {
@@ -231,7 +271,7 @@ var applied_style;
 function set_night_mode_style()
 {
     if (night_mode_on())
-	applied_style = add_style(dark_style);
+	applied_style = add_style(night_style);
     else
 	if (applied_style)
 	{
@@ -242,12 +282,12 @@ function set_night_mode_style()
 
 function night_mode_on()
 {
-    return (scriptStorage.getItem("google_images_style") == 'dark');
+    return get_bool_setting('images_night_mode', false);
 }
 
 function toggle_style()
 {
-    scriptStorage.setItem("google_images_style", (night_mode_on() ? '' : 'dark'));
+    set_bool_setting('images_night_mode', !night_mode_on());
     set_night_mode_style();
 }
 
