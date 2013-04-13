@@ -9,10 +9,14 @@
 // @include        http*://www.google.*/search?*
 // @include        http*://www.google.*/
 // @include        http*://www.google.*/#*
+// @include        http*://www.google.*/imghp*
+// @include        http*://www.google.*/images?*
 // @include        https://encrypted.google.*/webhp?*
 // @include        https://encrypted.google.*/search?*
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
+// @include        https://encrypted.google.*/imghp*
+// @include        https://encrypted.google.*/images?*
 //
 // leave igoogle alone:
 // @exclude        http*://www.google.*/ig?*

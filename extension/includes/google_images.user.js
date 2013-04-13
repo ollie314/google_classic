@@ -10,6 +10,7 @@
 // @include        http*://www.google.*/search*tbm=isch*
 // @include        http*://www.google.*/images?*
 // @include        http*://www.google.*/imghp*
+// @include        https://encrypted.google.*/search*tbm=isch*
 // @include        https://encrypted.google.*/images?*
 // @include        https://encrypted.google.*/imghp*
 // ==/UserScript==

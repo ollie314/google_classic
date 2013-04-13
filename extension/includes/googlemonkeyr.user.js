@@ -14,11 +14,10 @@
 // @include        https://encrypted.google.*/#*
 // 
 // Exclude google images and igoogle:
-// @exclude        http*://www.google.*/search?*&um=1*
-// @exclude        https://encrypted.google.*/search?*&um=1*
+// @exclude        http*://www.google.*/search*tbm=isch*
+// @exclude        https://encrypted.google.*/search*tbm=isch*
 // @exclude        http*://www.google.*/ig?*
 // @exclude        https://encrypted.google.*/ig?*
-//
 // ==/UserScript==
 
 (function(document, location, navigator,
@@ -166,8 +165,9 @@ function load_styles()
     //    addStyle("@namespace url(http://www.w3.org/1999/xhtml); div.lnsec {display:none;}");
   */
 	
-    // Hide useless "Everything toolbar"
-    addStyle("@namespace url(http://www.w3.org/1999/xhtml); div#modeselector {display:none;} div.lnsec{border-top:0;}");
+    // Hide useless "Everything toolbar", keep it on encrypted.google.com: only way to switch mode
+    if (location.hostname != "encrypted.google.com")
+	addStyle("@namespace url(http://www.w3.org/1999/xhtml); div#modeselector {display:none;} div.lnsec{border-top:0;}");
 
     // addStyle("@namespace url(http://www.w3.org/1999/xhtml); #center_col, #foot {margin-right: 0 !important;} #rhs, #tads, #topstuff table.ts, #bottomads{display:none;}");
 
@@ -600,8 +600,8 @@ function startup_checks()
 {
     if (get_setting("version_number") != version_number)
     {
-	my_alert("It's now possible to customize look and feel "+
-		 "through the extension's Preferences or Google's settings button, enjoy !");
+	my_alert("It's now possible to customize look and feel and load more results automatically. "+
+		 "Use the extension's Preferences or Google's Settings button.");
 	set_setting("version_number", version_number);
     }
 }
