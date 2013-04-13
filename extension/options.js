@@ -299,7 +299,8 @@ function init()
 
     // Google Images
     form = document.getElementById("images_preferences");
-    setup_checkbox("images_night_mode");    
+    setup_checkbox("images_night_mode");
+    setup_checkbox("images_zoom_on_hover");
     
     var field = document.getElementById("NightHuefield");
     document.getElementById("NightHue").addEventListener("click", darkPicker.pickColor.bind(darkPicker), false);
