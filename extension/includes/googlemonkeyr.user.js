@@ -13,7 +13,9 @@
 // @include        https://encrypted.google.*/
 // @include        https://encrypted.google.*/#*
 // 
-// Exclude google images and igoogle:
+// Exclude google images, fonts and igoogle:
+// (google fonts: http://www.google.com/fonts/ -> matches above)
+// @exclude        http*://www.google.*/*/
 // @exclude        http*://www.google.*/search*tbm=isch*
 // @exclude        https://encrypted.google.*/search*tbm=isch*
 // @exclude        http*://www.google.*/ig?*

@@ -18,7 +18,9 @@
 // @include        https://encrypted.google.*/imghp*
 // @include        https://encrypted.google.*/images?*
 //
-// leave igoogle alone:
+// leave igoogle, google fonts alone:
+// (google fonts: http://www.google.com/fonts/ -> matches above)
+// @exclude        http*://www.google.*/*/
 // @exclude        http*://www.google.*/ig?*
 // @exclude        https://encrypted.google.*/ig?*
 // ==/UserScript==

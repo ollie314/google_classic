@@ -163,6 +163,10 @@ function oldTrig() {
 
 /* Google Images Styling by laurenbacall */
 
+var zoom_on_hover_style =
+".images_table a img:hover { -o-transform: scale(1.1) !important; } /* Enlarges thumbnails in Images section on hover */";
+
+
 var common_style =
 "#modeselector,"+
 ".lnsec                  { display: none; } /* Hides the redundant side Web/Images/etc menu with horizontal divider */"+
@@ -323,6 +327,8 @@ function on_document_ready(f)
 function doc_ready()
 {
     add_style(common_style);
+    if (get_bool_setting("images_zoom_on_hover", false))
+	add_style(zoom_on_hover_style);
     set_night_mode_style();
 }
 
