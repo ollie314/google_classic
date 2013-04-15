@@ -288,7 +288,7 @@ function init()
     setup_checkbox("remove_related_searches");
     setup_checkbox("numbers");
     setup_checkbox("highlight_on_hover");    
-    setup_field("border_radius", 10);
+    setup_field("border_radius", 5);
     setup_field("results_width", 673);
     
     var field = document.getElementById("ResHuefield");

@@ -151,7 +151,7 @@ function load_prefs()
     prefs.remove_related_searches = get_bool_setting("remove_related_searches", false);
     prefs.background_color = get_setting("background_color", "#e5ecf9");
     prefs.use_border = get_bool_setting("use_border", false);
-    prefs.border_radius = get_setting("border_radius", 10);
+    prefs.border_radius = get_setting("border_radius", 5);
     prefs.numbers = get_bool_setting("numbers", false);
     prefs.highlight_on_hover = get_bool_setting("highlight_on_hover", false);
     prefs.results_width = get_setting("results_width", 673);
@@ -217,7 +217,7 @@ function load_styles()
     // lauren's style
     var new_style =
 "#tbbc                                    /* Additional parameters indicator strip */"+
-"                        { background: "+hue+" !important; border-radius: "+border_radius+"px; "+
+"                        { border-radius: 5px; "+
 "                          width: 100% !important; display: block !important; }"+
 
 "/*-------------Image thumbnail results, also the thumbnails in web results----------------*/"+
@@ -638,7 +638,7 @@ function startup_checks()
 {
     if (get_setting("version_number") != version_number)
     {
-	my_alert("It's now possible to customize look and feel and load more results automatically. "+
+	my_alert("It's now possible to customize look and feel. "+
 		 "Use the extension's Preferences or Google's Settings button.");
 	set_setting("version_number", version_number);
     }

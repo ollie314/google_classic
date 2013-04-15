@@ -7,16 +7,20 @@ body            { font-family:Arial,sans-serif; cursor:default; max-width:900px;
 header          { display:block; text-align:center; padding:25px 50px 10px 50px; margin:0 50px;
                   border-bottom:1px solid rgba(0,0,0,0.15); box-shadow:0 1px #fff; }
 content         { display:block; padding:0 50px; }
-section		{ border:none; border-radius:2px; padding:30px 40px; 
+div.body	{ margin:50px 30px; }
+section		{ border:none; border-radius:2px; padding:5px 20px; 
 		  border-radius:5px;
 		}
-form > div	{ margin:30px 0px; }
+form > div,
+form > section > div	{ margin:15px 0px; }
 footer          { display:block; text-align:center; padding:0 50px; margin:30px 50px 0 50px;
                   border-top:1px solid #fff; box-shadow:0 -1px rgba(0,0,0,0.15); }              
 h1              { font-family:"Times New Roman",Georgia,FreeSerif,serif; margin:0px; margin-bottom:-10px; }
 h3              { margin-bottom:5px; }
-
 li		{ list-style:none; }
+
+.form-row	{ position:relative; }
+right		{ position:absolute; top:0px; left:350px; }
 
 header, h3	 { color:#1858cc; /*#164bf4*/ }
 red		 { color:#f13238; }
