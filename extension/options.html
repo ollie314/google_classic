@@ -11,25 +11,21 @@
 </header>
 
 <content>
-<br>
-<section>
 <div class="body">
+
 <h3>Google Search Preferences</h3>
 <form name="preferences" id="preferences" class="aligned">
+    <section>
+    <h4>Content</h4>
     <div class="form-row checkbox-row">
       <label for="favicon">
         <input name="favicon" id="favicon" type="checkbox">
-        Display favicons</label>
+        Show favicons</label>
     </div>
     <div class="form-row checkbox-row">
       <label for="autoload">
         <input name="autoload" id="autoload" type="checkbox">
-        Autoload more results</label>
-    </div>
-    <div class="form-row checkbox-row">
-      <label for="remove_related_searches">
-        <input name="remove_related_searches" id="remove_related_searches" type="checkbox">
-        Remove "Related Searches"</label>
+        Autoload next results</label>
     </div>
     <div class="form-row checkbox-row">
       <label for="numbers">
@@ -37,9 +33,18 @@
         Number results ( 1, 2, 3... etc. )</label>
     </div>
     <div class="form-row checkbox-row">
+      <label for="remove_related_searches">
+        <input name="remove_related_searches" id="remove_related_searches" type="checkbox">
+        Hide "Related Searches"</label>
+    </div>
+    </section>
+
+    <section>
+    <h4>Appearance</h4>
+    <div class="form-row checkbox-row">
       <label for="highlight_on_hover">
         <input name="highlight_on_hover" id="highlight_on_hover" type="checkbox">
-        Highlight on hover</label>
+        Highlight results on hover</label>
     </div>
     <div class="form-row checkbox-row">
       <label for="use_border">
@@ -48,26 +53,28 @@
     </div>
     <div class="form-row checkbox-row">
       Results background color&nbsp;&nbsp;&nbsp;
-      <a href="javascript:;" id="ResHue" class="colordisplay">&nbsp;&nbsp;&nbsp;&nbsp;</a>
-      <input id="ResHuefield" size="7" maxlength="7">
+      <right><a href="javascript:;" id="ResHue" class="colordisplay">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      <input id="ResHuefield" size="7" maxlength="7"></right>
     </div>
     <div class="form-row checkbox-row">
       <label for="border_radius">
         Results boxes roundness (0 = squares)&nbsp;&nbsp;&nbsp;&nbsp;
-	<input name="border_radius" id="border_radius" size="2" maxlength="2">
+	<right><input name="border_radius" id="border_radius" size="2" maxlength="2"></right>
         </label>
     </div>
     <div class="form-row checkbox-row">
       <label for="results_width">
         Results boxes width&nbsp;&nbsp;&nbsp;&nbsp;
-	<input name="results_width" id="results_width" size="3" >
+	<right><input name="results_width" id="results_width" size="3" ></right>
         </label>
     </div>
+    </section>
 </form>
 
 <br>
 <h3>Image Search Preferences</h3>
 <form name="images_preferences" id="images_preferences" class="aligned">
+    <section>
     <div class="form-row checkbox-row">
       <label for="images_zoom_on_hover">
         <input name="images_zoom_on_hover" id="images_zoom_on_hover" type="checkbox">
@@ -75,14 +82,14 @@
     </div>
     <div class="form-row checkbox-row">
       Night mode background color&nbsp;&nbsp;&nbsp;
-      <a href="javascript:;" id="NightHue" class="colordisplay">&nbsp;&nbsp;&nbsp;&nbsp;</a>
-      <input id="NightHuefield" size="7" maxlength="7">&nbsp;&nbsp;&nbsp;&nbsp;
+      <right><a href="javascript:;" id="NightHue" class="colordisplay">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      <input id="NightHuefield" size="7" maxlength="7"></right>
     </div>
+    </section>
 </form>
 
 
 </div>
-</section>
 </content>
 <footer>
     <p>Based on <a href="http://userscripts.org/scripts/show/9310">GoogleMonkeyR</a> and <a href="http://userscripts.org/scripts/show/48293" >Google Images Direct Links</a> userscripts.<br>
