@@ -59,6 +59,13 @@ function my_alert(msg)
     alert("Google Classic\n\n" + msg);    
 }
 
+function url_hostname(url)
+{
+    var t = document.createElement('a');
+    t.href = url;
+    return t.hostname;
+}
+
 function addStyle(css)
 {
     var heads = document.getElementsByTagName("head");
@@ -361,48 +368,25 @@ function process_result(link)  // was resultsToTable()
 	link.appendChild(d);
     }
     
-    var a = document.getElementByXPath(".//h3[contains(@class,'r')]/a", link);
-    if (a)
+    var links = document.getElementsByXPath(".//h3[contains(@class,'r')]/a", link);
+    // can be more than one link, ex search for 'akelpad'
+    for (var i = 0; i < links.length; i++)
     {
+	var a = links[i];
 	//console.log(a.href)	    
 	// turn into a direct link
 	var indirect_link = a.href.match(/\/url\?q\=(http[^&]*)&/);
 	if (indirect_link)
-	    a.href = unescape(indirect_link[1]);
-	
+	    a.href = unescape(indirect_link[1]);	
 	a.removeAttribute("onmousedown");
 
-	if (prefs.favicons)
+	if (i == 0 && prefs.favicons)
 	{
-	    var base = a.href.match(/http:\/\/([\w\.\-]+)\//);
-	    if(base){
-		var fav = document.buildElement('img', {width:'16',height:'16',style:'margin-bottom:-3px;', src:'http://www.google.com/s2/favicons?domain=' + encodeURIComponent(base[1])});
-		a.parentNode.insertBefore(fav, a);
-		a.parentNode.insertBefore(document.createTextNode(' '), a);
-	    }
+	    var host = url_hostname(a.href);
+	    var fav = document.buildElement('img', {width:'16',height:'16',style:'margin-bottom:-3px;', src:'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host)});
+	    a.parentNode.insertBefore(fav, a);
+	    a.parentNode.insertBefore(document.createTextNode(' '), a);
 	}	
-
-	var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid']", link);
-//			var ele = document.getElementByXPath(".//div[@class='s']//span[@class='vshid'] | .//div[@class='s']//span[@class='flc']", link);
-	if (ele)
-	{
-	    // console.log(ele.innerHTML);
-	    var vsl = ele.getElementsByTagName('a');
-	    for (var k = 0; k < vsl.length; k++)
-	    {
-		if (k==0)
-		    ele.insertBefore(document.createTextNode(" - "), vsl[k]);
-		vsl[k].setAttribute('class', 'fl');
-	    }
-	}
-
-	if(ele)
-	{
-	    var notrack = document.buildElement('a',
-		{ href:a.href,'class':'fl',title:'Visit the link without Google tracking you'}, 'Trackless');
-	    ele.appendChild(document.createTextNode(" - "), ele.nextSibling);
-	    ele.appendChild(notrack, ele.nextSibling);
-        }
     }
 }
 
