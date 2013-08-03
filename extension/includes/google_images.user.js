@@ -51,6 +51,21 @@ function set_bool_setting(name, val)
     set_setting(name, (val ? 'y' : 'n'));
 }
 
+document.buildElement = function(type, atArr, inner, action, listen)
+{
+    var e = document.createElement(type);
+    for (var at in atArr)
+    {
+        if (atArr.hasOwnProperty(at))
+            e.setAttribute(at, atArr[at]);
+    }
+    if (action && listen)
+        e.addEventListener(action, listen, false);
+    if (inner)
+        e.innerHTML = inner;
+    return e;
+};
+
 function evalNodes(path) {
 	return document.evaluate(path, document, null, window.XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 }
@@ -86,18 +101,24 @@ function saveVersion() {
 	window.location = window.location+"sout=1";
 }
 
+var advanced_search_url;
+function init_advanced_search_url()
+{
+    var link = evalNode('//div[@id="foot"]//p/a[contains(@href, "advanced_image_search")]');
+    advanced_search_url = (link ? link.href : null);
+}
+
 function add_extra_sizes_link()
 {
     var last = document.body.querySelector('li#isz_i');
     if (!last) return;
-    var adv_search = evalNode('//div[@id="foot"]//p/a[contains(@href, "advanced_image_search")]');
-    if (!adv_search) return;
+    if (!advanced_search_url) return;
 
     // TODO: translate link text for localized versions ...
     var d = document.createElement('div');
     d.innerHTML = '<li class="tbou"><a class="q">More…</a></li>';
     var li = d.firstChild;
-    li.firstChild.href = adv_search.href;
+    li.firstChild.href = advanced_search_url;
     last.parentNode.appendChild(li);
     
     // highlight if currently in use
@@ -279,6 +300,7 @@ function add_style(css)
     head.appendChild(node);
     return node;
 }
+var addStyle = add_style;
 
 var applied_style;
 function set_night_mode_style()
@@ -318,6 +340,84 @@ function add_style_toggle_button()
     div.appendChild(a);
 }
 
+/****************************************** menu ********************************************/
+
+var menu;
+function create_menu(link)
+{
+    var parent = link.parentNode;
+    parent.style = "position:relative;";    
+    addStyle(menu_style);	     
+
+    menu = document.buildElement('div', {}, menu_html);
+    parent.appendChild(menu);
+
+    var links = menu.getElementsByTagName('a');
+    links[0].onclick = show_options;    // google classic options
+    links[1].href = link.url;          // normal search preferences    
+    links[2].href = advanced_search_url;
+}
+
+function hide_menu()
+{
+    menu.style = 'display:none;';
+    window.removeEventListener('click', hide_menu, false);
+}
+
+function show_menu(e)
+{
+    if (!menu)
+	create_menu(this);
+    menu.style = 'display:auto;';
+    window.addEventListener('click', hide_menu, false);    
+    e.preventDefault();
+}
+
+var menu_style =
+"@namespace url(http://www.w3.org/1999/xhtml); "+
+".menu_dropdown { background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.196); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.196); font-size: 13px; padding: 0px 0px 6px; position: absolute; right: 0px; top: 28px; transition: opacity 0.22s cubic-bezier(0.25, 0.1, 0.25, 1) 0; white-space: nowrap; z-index: 3; } " +
+".menu_dropdown a { text-decoration:none; display: block; padding: 8px 20px 8px 16px; } " +
+".menu_dropdown a, .menu_dropdown a:visited, .menu_dropdown a:hover { color: #333333;} " +
+".menu_dropdown a:hover {background-color:#eee; text-decoration:none;} ";
+
+// TODO use current page language !
+var menu_html =
+'<div class="menu_dropdown">'+
+'  <ul>'+
+'    <li><a>Google Classic</a></li>'+
+'    <li><a>Search Settings</a></li>'+
+'    <li><a href="/advanced_search?q=foo&hl=en">Advanced Search</a></li>'+
+'    <li><a href="/history/optout?hl=en">Web History</a></li>'+
+'    <li><a href="http://support.google.com/images?hl=en">Search Help</a></li>'+
+'  </ul>'+
+'</div>';
+
+function init_menu()
+{
+    var a = document.querySelector("#gbg5");
+    if (!a)
+	return;
+    a.onclick = show_menu;
+    a.url = a.href;
+    a.href = "javascript:;";
+}
+
+/***************************************** extension messaging ********************************************/
+
+var bgproc;
+function extension_message(e)
+{
+    var m = e.data;
+    if (!bgproc)
+	bgproc = e.source;
+}
+
+function show_options()
+{
+    bgproc.postMessage("show_options");
+}
+
+
 
 /************************************************** init *************************************************/
 
@@ -346,7 +446,9 @@ function main()
     var n = document.getElementById("rg_hr");
 
     checkVersion();
+    init_advanced_search_url();    
     add_extra_sizes_link();
+    init_menu();
 
     add_style_toggle_button();
     
@@ -375,6 +477,7 @@ function main()
     }
 }
 
+opera.extension.onmessage = extension_message;
 on_document_ready(doc_ready);
 document.addEventListener('DOMContentLoaded', main, false); 
 
