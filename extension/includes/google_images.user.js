@@ -340,6 +340,43 @@ function add_style_toggle_button()
     div.appendChild(a);
 }
 
+/****************************************** search by image ********************************************/
+
+function init_sbi()
+{
+    var td = document.body.querySelector('td.lst-td');
+    if (!td) return;
+    add_style(sbi_style);
+    var icon = document.buildElement('td', {}, sbi_html);
+    if (td.nextSibling) // front page
+	return;
+	// td.parentNode.insertBefore(icon, td.nextSibling);
+    else // results page
+	td.parentNode.appendChild(icon);
+    //td.insertAdjacentElement(icon);
+    // td.parentNode.insertAdjacentElement(td, icon);
+}
+
+var sbi_html = 
+'<td class="gsib_b">' +
+'  <div class="gsst_b" id="gs_st0" style="line-height: 27px" dir="ltr">' +
+'    <a class="gsst_a" href="/imghp?sbi=1" tabindex="0" aria-label="Search by image">' +
+'      <span id="gs_si0">' +
+'        <span title="Search by image" class="gssi_a gsst_e" id="qbi"></span>' +
+'      </span>' +
+'    </a>' +
+'  </div>' +
+'</td>';
+
+var sbi_style =
+"@namespace url(http://www.w3.org/1999/xhtml); "+
+".gsst_b { font-size:16px; padding: 0px 2px; position:relative; white-space:nowrap; } " +
+".gsst_a { padding: 0px 4px; } " +
+".gsst_e { opacity:0.6 !important; vertical-align:middle; } " +
+".gsst_e:hover { opacity:1.0 !important; } " +
+"#qbi.gssi_a { display:inline-block; width:18px; height:13px; background-image: url('data:image/gif;base64,R0lGODlhEgANAOMKAAAAABUVFRoaGisrKzk5OUxMTGRkZLS0tM/Pz9/f3////////////////////////yH5BAEKAA8ALAAAAAASAA0AAART8Ml5Arg3nMkluQIhXMRUYNiwSceAnYAwAkOCGISBJC4mSKMDwpJBHFC/h+xhQAEMSuSo9EFRnSCmEzrDComAgBGbsuF0PHJq9WipnYJB9/UmFyIAOw=='); } " +
+"";
+
 /****************************************** menu ********************************************/
 
 var menu;
@@ -449,6 +486,7 @@ function main()
     init_advanced_search_url();    
     add_extra_sizes_link();
     init_menu();
+    init_sbi();
 
     add_style_toggle_button();
     

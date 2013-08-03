@@ -23,6 +23,9 @@
 // @exclude        http*://www.google.*/*/
 // @exclude        http*://www.google.*/ig?*
 // @exclude        https://encrypted.google.*/ig?*
+// need js for search by image
+// @exclude        http*://www.google.*/imghp?*sbi=1*
+// @exclude        http*://encrypted.google.*/imghp?*sbi=1*
 // ==/UserScript==
 
 (function(document) {
