@@ -86,19 +86,28 @@ function saveVersion() {
 	window.location = window.location+"sout=1";
 }
 
-function changeVersion() {
-	var t = evalNode('//div[@id="foot"]//p/a[contains(@href, "tbm=isch")]');
-	if (!t) return;
-	var a = document.createElement('a');
-	a.innerHTML = "(Always)";
-	a.href = t.href;
-	a.setAttribute('style', 'margin-left: -12px; font-size: smaller;');
-	a.addEventListener('click', saveVersion, false);
-	var s = document.createElement('span');
-	var t = t.parentNode.replaceChild(s, t);
-	s.appendChild(t);
-	s.appendChild(document.createTextNode(' '));
-	s.appendChild(a);
+function add_extra_sizes_link()
+{
+    var last = document.body.querySelector('li#isz_i');
+    if (!last) return;
+    var adv_search = evalNode('//div[@id="foot"]//p/a[contains(@href, "advanced_image_search")]');
+    if (!adv_search) return;
+
+    // TODO: translate link text for localized versions ...
+    var d = document.createElement('div');
+    d.innerHTML = '<li class="tbou"><a class="q">More…</a></li>';
+    var li = d.firstChild;
+    li.firstChild.href = adv_search.href;
+    last.parentNode.appendChild(li);
+    
+    // highlight if currently in use
+    var items = last.parentNode.children;
+    for (var i = 0; i < items.length; i++)
+	if (items[i].className == "tbos")
+	    return;
+    // nothing selected, highlight    
+    li.className = "tbos";
+    li.innerHTML = "Other";
 }
 
 function cleanURL() {
@@ -337,7 +346,7 @@ function main()
     var n = document.getElementById("rg_hr");
 
     checkVersion();
-    changeVersion();
+    add_extra_sizes_link();
 
     add_style_toggle_button();
     
