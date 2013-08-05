@@ -301,6 +301,7 @@ function init()
 
     // Google Images
     form = document.getElementById("images_preferences");
+    setup_checkbox("images_disabled");    
     setup_checkbox("images_zoom_on_hover");
     
     var field = document.getElementById("NightHuefield");

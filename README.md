@@ -13,37 +13,26 @@ It also gives direct links to websites, so they open faster and google can't tra
 Also brings the classic Google Images interface back !
 The standard image wall interface is nice the first 5 minutes, but if you've had to stare at it
 for longer periods you know how tiring it can be. Classic interface gives space to breathe and
-avoids epileptic seizures. The extension also adds an easy-on-the-eye black background mode =)
+also adds an easy-on-the-eye black background mode.
 
-What it does:
-- Blocks javascript on google search and images. This gives access to the lighter, non js version.
-- Removes side, top and bottom ads (aka 'sponsored results')
-- Search results pretty formatting
-- Brings back the classic google images interface
-- Adds a 'night mode' link on google images to switch colors.
+Features
+--------
 
-Opera search engine setup
--------------------------
+- Blocks javascript on google search and images.
 
-Use these to avoid the redirection with the default search settings, they'll take you straight to the right place.
+  This gives access to the lighter, non js version.
+- Removes ads (aka 'sponsored results')
+- Makes look and feel customizable
+- Brings back classic google images interface
+- Adds a 'Night Mode' to google images.
 
-- Better search results !
-  By default google uses fuzzy search, which gives poor search results in many cases.
-  Use google's `verbatim` mode so it searches for exactly what you typed.
-  To have opera use it by default: 
-  `Tools->Preferences->Search->Google, Edit, Details`, set `Address` to this and click `OK`:
-  ```
-  http://www.google.com/search?q=%s&hl=en&tbo=1&gbv=1&prmd=ivns&source=lnt&tbs=li:1&sa=X
-  ```
+Other google extensions generally don't support the non js version of Google, so it can also:
+- autoload next results
+- display favicons
 
-- Google Images
-  While you're at it also add the one for Google Images:
-  `Add, Name: Google Images, Keyword: i, Address:`
-  ```
-  http://images.google.com/search?q=%s&hl=en&gbv=1&site=imghp&tbm=isch&num=20&sa=N
-  ```
-  Now you can just type `i calvin hobbes` in the address bar to find your favorite comics.
-
+Also saves bandwith, with web search for example:
+- first time: 137k instead of 422k.
+- afterwards: 19k instead of 101k.
 
 Link tracking
 -------------
@@ -53,6 +42,4 @@ Google won't be able to track your clicks on Google Search and Images. This is u
 Credits
 -------
 
-Based on the fearfully awesome GoogleMonkeyR userscript by mungushume, and Google Images direct links by Dwoo.
-Script blocking logic is from [scriptweeder](https://github.com/lemonsqueeze/scriptweeder/wiki).
-
+Based on awesome [GoogleMonkeyR](http://userscripts.org/scripts/show/9310) userscript by mungushume, and [Google Images direct links](http://userscripts.org/scripts/show/48293) by Dwoo. Styling by [laurenbacall](http://my.opera.com/laurenbacall/blog/).

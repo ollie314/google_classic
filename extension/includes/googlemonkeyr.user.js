@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.3";
-var version_date = "$Date Apr 15 2013 $";
+var version_number = "1.4";
+var version_date = "$Date Aug 05 2013 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -621,11 +621,7 @@ function on_document_ready(f)
 function startup_checks()
 {
     if (get_setting("version_number") != version_number)
-    {
-	my_alert("It's now possible to customize look and feel. "+
-		 "Use the extension's Preferences or Google's Settings button.");
 	set_setting("version_number", version_number);
-    }
 }
 
 var main_done = false;

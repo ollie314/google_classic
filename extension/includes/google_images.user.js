@@ -102,10 +102,16 @@ function saveVersion() {
 }
 
 var advanced_search_url;
-function init_advanced_search_url()
+function init_bottom_links()
 {
     var link = evalNode('//div[@id="foot"]//p/a[contains(@href, "advanced_image_search")]');
     advanced_search_url = (link ? link.href : null);
+    
+    // setup 'switch to standard version' link
+    link = link.parentNode.getElementsByTagName('a')[2];
+    //link = evalNode('//div[@id="foot"]//p/a[contains(@href, "/search")]');
+    if (link)
+	link.onclick = function(){ set_bool_setting('images_disabled', true); };
 }
 
 function add_extra_sizes_link()
@@ -421,6 +427,11 @@ function show_options()
 
 /************************************************** init *************************************************/
 
+function needed()
+{
+    return !get_bool_setting('images_disabled', false);
+}
+
 function on_document_ready(f)
 {
     function check_ready()
@@ -435,6 +446,7 @@ function on_document_ready(f)
 
 function doc_ready()
 {
+    if (!needed()) return;
     add_style(common_style);
     if (get_bool_setting("images_zoom_on_hover", false))
 	add_style(zoom_on_hover_style);
@@ -443,10 +455,11 @@ function doc_ready()
 
 function main()
 {
+    if (!needed()) return;    
     var n = document.getElementById("rg_hr");
 
     checkVersion();
-    init_advanced_search_url();    
+    init_bottom_links();    
     add_extra_sizes_link();
     init_menu();
 

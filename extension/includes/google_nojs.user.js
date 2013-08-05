@@ -25,10 +25,29 @@
 // @exclude        https://encrypted.google.*/ig?*
 // ==/UserScript==
 
-(function(document) {
+(function(document, location) {
+    function is_prefix(p, str)
+    {
+        return (str.slice(0, p.length) == p);
+    }
+    
+    function in_google_images()
+    {
+	return (location.pathname == '/imghp' ||
+		location.pathname == '/images' ||
+		location.href.match(/\/search.*tbm=isch/) ||
+		is_prefix("images.", location.hostname));
+    }
+    
+    function needed()
+    {
+	var gi_disabled = (widget.preferences.getItem('images_disabled') == 'y');
+	return !(gi_disabled && in_google_images());
+    }
     
     function handle_noscript_tags()
     {
+	if (!needed()) return;
 	for (var j = document.getElementsByTagName('noscript'); j[0];
 	     j = document.getElementsByTagName('noscript')) 
 	{
@@ -40,15 +59,17 @@
 
     function beforeextscript_handler(e)
     {
+	if (!needed()) return;
 	e.preventDefault();
     }
 
     // Handler for both inline *and* external scripts
     function beforescript_handler(e)
     {
-      if (e.element.src) // external script
-	  return;
-      e.preventDefault();
+	if (!needed()) return;	
+	if (e.element.src) // external script
+	    return;
+	e.preventDefault();
     }    
 
     // block inline scripts
@@ -60,4 +81,4 @@
     // use this one if you want <noscript> tags interpreted as if javascript was disabled in opera.
     document.addEventListener('DOMContentLoaded',  handle_noscript_tags, false);
 
-})(window.document);
+})(window.document, window.location);
