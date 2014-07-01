@@ -168,7 +168,7 @@ function setTrig() {
 }
 
 function oldLinks() {
-	var imgs = evalNodes('//a[contains(@href, "/imgres")]');
+	var imgs = evalNodes('//a[contains(@href, "/url")]');
 	var img, a, host;
 	for (var i = 0; img = imgs.snapshotItem(i);  i++) {
 	    // host = img.parentNode.lastChild;
@@ -178,12 +178,12 @@ function oldLinks() {
 		a.innerHTML = host.innerHTML;
 		//a.setAttribute('style', "text-decoration: inherit; color: inherit");
 
-		a.setAttribute('href', decodeURIComponent(decodeURIComponent(img.href.match(/imgrefurl=([^&]+)/)[1])));
+		a.setAttribute('href', decodeURIComponent(decodeURIComponent(img.href.match(/url\?q=([^&]+)/)[1])));
 
 		// host.replaceChild(a, host.firstChild);
 		img.parentNode.replaceChild(a, host);
 		try {
-			img.href = decodeURIComponent(decodeURIComponent(img.href.match(/imgurl=([^&]+)/)[1]));
+			img.href = decodeURIComponent(decodeURIComponent(img.href.match(/url\?q=([^&]+)/)[1]));
 		} catch (e) {}
 	}
 //	t.addEventListener('DOMNodeInserted', oldTrig, false);
