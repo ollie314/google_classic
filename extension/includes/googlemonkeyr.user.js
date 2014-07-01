@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.5";
-var version_date = "$Date Apr 05 2014 $";
+var version_number = "1.6";
+var version_date = "$Date Jul 01 2014 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -260,9 +260,9 @@ function remove_ads()
     }
 
     // top and bottom ads
-    var elems = document.getElementsByXPath("//div[@id='center_col']/div/h2[@class='spon']");
+    var elems = document.querySelectorAll('#tads');   
     for (var i = 0; elems[i]; i++)
-	elems[i].parentNode.style.display = "none";	      
+	elems[i].style.display = "none";	      
 }
 
 /****************************************** menu ********************************************/
