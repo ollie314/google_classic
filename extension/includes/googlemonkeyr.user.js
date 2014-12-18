@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.6";
-var version_date = "$Date Jul 01 2014 $";
+var version_number = "1.7";
+var version_date = "$Date Dec 17 2014 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -375,7 +375,7 @@ function process_result(link)  // was resultsToTable()
 	var a = links[i];
 	//console.log(a.href)	    
 	// turn into a direct link
-	var indirect_link = a.href.match(/\/url\?q\=(http[^&]*)&/);
+	var indirect_link = a.href.match(/\/url\?url\=(http[^&]*)&/);
 	if (indirect_link)
 	    a.href = unescape(indirect_link[1]);	
 	a.removeAttribute("onmousedown");
