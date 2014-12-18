@@ -26,7 +26,7 @@
 	  setTimeout, clearTimeout){
 
 var version_number = "1.7";
-var version_date = "$Date Dec 17 2014 $";
+var version_date = "$Date Dec 18 2014 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -197,6 +197,10 @@ function load_styles()
     // rhs ads
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");
 
+    // 'Cached' 'Similar' links taken out from dropdown
+    addStyle("@namespace url(http://www.w3.org/1999/xhtml); " + 
+	     ".kv a {text-decoration:none;}" + 
+	     ".kv a:hover {text-decoration:underline;}");
 
     // results styling
     var hue = prefs.background_color;
@@ -387,6 +391,23 @@ function process_result(link)  // was resultsToTable()
 	    a.parentNode.insertBefore(fav, a);
 	    a.parentNode.insertBefore(document.createTextNode(' '), a);
 	}	
+    }
+
+    // 'Cached' and 'Similar' are in a dropdown now, move them out.
+    var items = link.querySelectorAll('cite + div ul li');
+    if (items)
+    {
+	var cite = link.querySelector('cite');
+	cite.parentNode.removeChild(cite.nextSibling);
+	for (var i = 0; i < items.length; i++)
+	{
+	    var a = items[i].firstChild;
+	    if (!a || a.tagName.toLowerCase() != 'a')
+		continue;
+	    a.className = '';
+	    cite.parentNode.appendChild(document.buildElement('text', null, ' - '));
+	    cite.parentNode.appendChild(a);
+	}
     }
 }
 
