@@ -25,7 +25,7 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.7";
+var version_number = "1.8";
 var version_date = "$Date Dec 18 2014 $";
     
 if (window != window.top)
@@ -397,7 +397,7 @@ function process_result(link)  // was resultsToTable()
     
     // 'Cached' and 'Similar' are in a dropdown now, move them out.
     var items = link.querySelectorAll('cite + div ul li');
-    if (items)
+    if (items.length)
     {
 	var cite = link.querySelector('cite');
 	cite.parentNode.removeChild(cite.nextSibling);
