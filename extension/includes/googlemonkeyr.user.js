@@ -372,8 +372,9 @@ function process_result(link)  // was resultsToTable()
 	link.appendChild(d);
     }
     
-    var links = document.getElementsByXPath(".//h3[contains(@class,'r')]/a", link);
-    // can be more than one link, ex search for 'akelpad'
+    var links = link.querySelectorAll('a');
+    // Note: can be more than one h3/a link, ex search for 'akelpad'
+    //       plus the bottom links.
     for (var i = 0; i < links.length; i++)
     {
 	var a = links[i];
@@ -383,16 +384,17 @@ function process_result(link)  // was resultsToTable()
 	if (indirect_link)
 	    a.href = unescape(indirect_link[1]);	
 	a.removeAttribute("onmousedown");
-
-	if (i == 0 && prefs.favicons)
-	{
-	    var host = url_hostname(a.href);
-	    var fav = document.buildElement('img', {width:'16',height:'16',style:'margin-bottom:-3px;', src:'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host)});
-	    a.parentNode.insertBefore(fav, a);
-	    a.parentNode.insertBefore(document.createTextNode(' '), a);
-	}	
     }
 
+    if (prefs.favicons)
+    {
+	var a = links[0];
+	var host = url_hostname(a.href);
+	var fav = document.buildElement('img', {width:'16',height:'16',style:'margin-bottom:-3px;', src:'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host)});
+	a.parentNode.insertBefore(fav, a);
+	a.parentNode.insertBefore(document.createTextNode(' '), a);
+    }
+    
     // 'Cached' and 'Similar' are in a dropdown now, move them out.
     var items = link.querySelectorAll('cite + div ul li');
     if (items)
