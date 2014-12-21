@@ -169,22 +169,12 @@ function setTrig() {
 
 function oldLinks() {
 	var imgs = evalNodes('//a[contains(@href, "/url")]');
-	var img, a, host;
-	for (var i = 0; img = imgs.snapshotItem(i);  i++) {
-	    // host = img.parentNode.lastChild;
-	    host = img.parentNode.childNodes[2];
-	    
-		a = document.createElement('a');
-		a.innerHTML = host.innerHTML;
-		//a.setAttribute('style', "text-decoration: inherit; color: inherit");
-
-		a.setAttribute('href', decodeURIComponent(decodeURIComponent(img.href.match(/url\?q=([^&]+)/)[1])));
-
-		// host.replaceChild(a, host.firstChild);
-		img.parentNode.replaceChild(a, host);
-		try {
-			img.href = decodeURIComponent(decodeURIComponent(img.href.match(/url\?q=([^&]+)/)[1]));
-		} catch (e) {}
+	var img;
+	for (var i = 0; img = imgs.snapshotItem(i);  i++)
+        {
+	    try {
+		img.href = decodeURIComponent(img.href.match(/url\?url=([^&]+)/)[1]);
+	    } catch (e) {}
 	}
 //	t.addEventListener('DOMNodeInserted', oldTrig, false);
 }
