@@ -175,6 +175,9 @@ function oldLinks() {
 	    try {
 		img.href = decodeURIComponent(img.href.match(/url\?url=([^&]+)/)[1]);
 	    } catch (e) {}
+	    try {
+		img.href = decodeURIComponent(img.href.match(/url\?q=([^&]+)/)[1]);
+	    } catch (e) {}
 	}
 //	t.addEventListener('DOMNodeInserted', oldTrig, false);
 }
