@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.9";
-var version_date = "$Date Dec 25 2014 $";
+var version_number = "1.10";
+var version_date = "$Date May 11 2015 $";
     
 if (window != window.top)
     return;  // don't run in iframes
