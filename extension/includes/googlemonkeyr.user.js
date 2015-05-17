@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.10";
-var version_date = "$Date May 11 2015 $";
+var version_number = "1.11";
+var version_date = "$Date May 17 2015 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -264,7 +264,7 @@ function remove_ads()
     }
 
     // top and bottom ads
-    var elems = document.querySelectorAll('#tads');   
+    var elems = document.querySelectorAll('._Ak');
     for (var i = 0; elems[i]; i++)
 	elems[i].style.display = "none";	      
 }
