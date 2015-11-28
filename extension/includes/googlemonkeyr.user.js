@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.11";
-var version_date = "$Date May 17 2015 $";
+var version_number = "1.12";
+var version_date = "$Date Nov 28 2015 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -196,6 +196,8 @@ function load_styles()
 
     // rhs ads
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");
+    // remove privacy reminder from google
+    addStyle("._h0h { display: none; }");
 
     // 'Cached' 'Similar' links taken out from dropdown
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); " + 
