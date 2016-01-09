@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.12";
-var version_date = "$Date Nov 28 2015 $";
+var version_number = "1.13";
+var version_date = "$Date Jan 09 2016 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -348,7 +348,7 @@ function search_page_processor()
     var div = document.getElementByXPath("//div/div[@class='g']/parent::div | //div[@id='res']/div | //div[@id='res']/span[@id='search']");
     if (div)
     {	
-	var list = document.getElementsByXPath("//div[@id='ires']//li[starts-with(@class,'g')] | //div[@id='ires']//li/div[@class='g']");
+	var list = document.querySelectorAll('#ires div.g');
 	var length = list.length;
 	for (var i = 0; i < list.length; i++)
 	    process_result(list[i]);
