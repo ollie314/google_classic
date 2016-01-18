@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.13";
-var version_date = "$Date Jan 09 2016 $";
+var version_number = "1.14";
+var version_date = "$Date Jan 18 2016 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -445,7 +445,7 @@ function process_autoload_results(responseText)
     if (autoload.resultStats && stats)
 	autoload.resultStats.innerHTML = stats.innerHTML;
     
-    var list = document.getElementsByXPath(".//div[@id='res']/div//li[starts-with(@class,'g')] | .//div[@id='res']/table//li[starts-with(@class,'g')] | .//div[@id='res']/div//li/div[@class='g']", nextResult);
+    var list = nextResult.querySelectorAll('#ires div.g');
     for (i = 0; i < list.length; i++)
     {
 	//console.log("adding autoloaded result");
