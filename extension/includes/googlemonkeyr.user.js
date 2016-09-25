@@ -25,8 +25,8 @@
 (function(document, location, navigator,
 	  setTimeout, clearTimeout){
 
-var version_number = "1.9";
-var version_date = "$Date Dec 25 2014 $";
+var version_number = "1.14";
+var version_date = "$Date Jan 18 2016 $";
     
 if (window != window.top)
     return;  // don't run in iframes
@@ -196,6 +196,8 @@ function load_styles()
 
     // rhs ads
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); #rhs_block {display:none;}");
+    // remove privacy reminder from google
+    addStyle("._h0h { display: none; }");
 
     // 'Cached' 'Similar' links taken out from dropdown
     addStyle("@namespace url(http://www.w3.org/1999/xhtml); " + 
@@ -264,7 +266,7 @@ function remove_ads()
     }
 
     // top and bottom ads
-    var elems = document.querySelectorAll('#tads');   
+    var elems = document.querySelectorAll('._Ak');
     for (var i = 0; elems[i]; i++)
 	elems[i].style.display = "none";	      
 }
@@ -346,7 +348,7 @@ function search_page_processor()
     var div = document.getElementByXPath("//div/div[@class='g']/parent::div | //div[@id='res']/div | //div[@id='res']/span[@id='search']");
     if (div)
     {	
-	var list = document.getElementsByXPath("//div[@id='ires']//li[starts-with(@class,'g')] | //div[@id='ires']//li/div[@class='g']");
+	var list = document.querySelectorAll('#ires div.g');
 	var length = list.length;
 	for (var i = 0; i < list.length; i++)
 	    process_result(list[i]);
@@ -443,7 +445,7 @@ function process_autoload_results(responseText)
     if (autoload.resultStats && stats)
 	autoload.resultStats.innerHTML = stats.innerHTML;
     
-    var list = document.getElementsByXPath(".//div[@id='res']/div//li[starts-with(@class,'g')] | .//div[@id='res']/table//li[starts-with(@class,'g')] | .//div[@id='res']/div//li/div[@class='g']", nextResult);
+    var list = nextResult.querySelectorAll('#ires div.g');
     for (i = 0; i < list.length; i++)
     {
 	//console.log("adding autoloaded result");

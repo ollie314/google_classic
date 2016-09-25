@@ -79,6 +79,6 @@
     window.opera.addEventListener('BeforeExternalScript', beforeextscript_handler, false);
     
     // use this one if you want <noscript> tags interpreted as if javascript was disabled in opera.
-    document.addEventListener('DOMContentLoaded',  handle_noscript_tags, false);
+    // document.addEventListener('DOMContentLoaded',  handle_noscript_tags, false);
 
 })(window.document, window.location);
